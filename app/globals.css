@@ -1,26 +1,123 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --ufscar-red: #8b0000;
+  --ufscar-red-dark: #660000;
+  --ufscar-gold: #d97706;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Accessibility Focus Style */
+*:focus-visible {
+  outline: 3px solid #d97706 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 5px rgba(217, 119, 6, 0.3) !important;
+}
+
+/* High Contrast Mode */
+html.high-contrast {
+  --background: #000000 !important;
+  --foreground: #ffffff !important;
+  filter: contrast(140%);
+}
+
+html.high-contrast * {
+  border-color: #ffffff !important;
+}
+
+html.high-contrast button,
+html.high-contrast a {
+  text-decoration: underline;
+}
+
+/* Dyslexic Font Support */
+html.font-dyslexic {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Arial', sans-serif !important;
+  letter-spacing: 0.05em;
+  line-height: 1.6;
+}
+
+/* Font Sizing */
+html.text-size-normal {
+  font-size: 100%;
+}
+
+html.text-size-large {
+  font-size: 112.5%; /* 18px base */
+}
+
+html.text-size-xlarge {
+  font-size: 125%; /* 20px base */
+}
+
+/* Reduced Motion */
+html.reduce-motion * {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+/* Screen Reader Only Utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 10px;
+  background: #9e1b22;
+  color: white;
+  padding: 8px 16px;
+  z-index: 9999;
+  font-weight: bold;
+  border-radius: 4px;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 10px;
+}
+
+/* Print Optimization */
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-page-break {
+    page-break-before: always;
+  }
 }
