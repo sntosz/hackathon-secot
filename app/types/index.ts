@@ -12,33 +12,43 @@ export interface CategoryRule {
 
 export type CertificateStatus = 'draft' | 'submitted' | 'approved' | 'rejected' | 'needs_info';
 
+export interface AuditLogItem {
+  id: string;
+  timestamp: string;
+  action: string;
+  userRole: 'student' | 'professor' | 'system';
+  details: string;
+}
+
 export interface Certificate {
   id: string;
   title: string;
-  issuer: string; // Organização / Instituição emissora
+  issuer: string;
   categoryId: CategoryId;
   hoursRequested: number;
   hoursApproved?: number;
-  issueDate: string; // YYYY-MM-DD
+  issueDate: string;
   completionDate: string;
   fileName?: string;
   fileSize?: string;
-  fileUrl?: string; // Simulated blob/data url
+  fileUrl?: string;
   status: CertificateStatus;
   feedback?: string;
   createdAt: string;
   tags?: string[];
+  verificationCode?: string; // Digital Hash Code UFSCar
 }
 
 export interface StudentProfile {
   name: string;
-  ra: string; // Registro Acadêmico UFSCar
+  ra: string;
   course: string;
   campus: string;
   email: string;
   totalHoursRequired: number;
   advisorName?: string;
   advisorEmail?: string;
+  entryYear?: string;
 }
 
 export interface SubmissionBatch {
@@ -49,6 +59,7 @@ export interface SubmissionBatch {
   status: 'pending' | 'reviewed' | 'approved' | 'rejected';
   secretariaNote?: string;
   recipientEmail?: string;
+  protocolNumber?: string;
 }
 
 export interface AccessibilitySettings {
@@ -57,5 +68,5 @@ export interface AccessibilitySettings {
   dyslexicFont: boolean;
   reduceAnimations: boolean;
   screenReaderOptimized: boolean;
-  theme: 'light' | 'dark' | 'system';
+  theme: 'light' | 'dark';
 }

@@ -37,9 +37,7 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     if (saved) {
       try {
         setSettings(JSON.parse(saved));
-      } catch (e) {
-        console.error('Failed to parse saved accessibility settings', e);
-      }
+      } catch (e) {}
     }
   }, []);
 
@@ -63,11 +61,9 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
     }, 4000);
   };
 
-  // Sync classes to <html> tag
   useEffect(() => {
     const root = document.documentElement;
 
-    // Theme & High Contrast
     if (settings.theme === 'dark') {
       root.classList.add('dark');
     } else {
@@ -86,11 +82,9 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
       root.classList.remove('font-dyslexic');
     }
 
-    // Font Size
     root.classList.remove('text-size-normal', 'text-size-large', 'text-size-xlarge');
     root.classList.add(`text-size-${settings.fontSize}`);
 
-    // Reduce animation
     if (settings.reduceAnimations) {
       root.classList.add('reduce-motion');
     } else {
@@ -102,7 +96,6 @@ export const AccessibilityProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <AccessibilityContext.Provider value={{ settings, updateSettings, resetSettings, announce, announcement }}>
       {children}
-      {/* Screen Reader Live Region */}
       <div
         aria-live={announcement?.priority || 'polite'}
         aria-atomic="true"

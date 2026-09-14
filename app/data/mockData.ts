@@ -1,4 +1,4 @@
-import { CategoryRule, Certificate, StudentProfile, SubmissionBatch } from '../types';
+import { CategoryRule, Certificate, StudentProfile, SubmissionBatch, AuditLogItem } from '../types';
 
 export const INITIAL_STUDENT_PROFILE: StudentProfile = {
   name: 'Lucas Ferreira Silva',
@@ -9,44 +9,52 @@ export const INITIAL_STUDENT_PROFILE: StudentProfile = {
   totalHoursRequired: 200,
   advisorName: 'Prof. Dr. Alexandre Zamberlan',
   advisorEmail: 'zamberlan@ufscar.br',
+  entryYear: '2022',
 };
+
+export const UFSCAR_COURSES = [
+  { id: 'bcc', name: 'Bacharelado em Ciência da Computação (BCC)', totalHours: 200 },
+  { id: 'eng_comp', name: 'Engenharia de Computação', totalHours: 240 },
+  { id: 'lic_comp', name: 'Licenciatura em Computação', totalHours: 200 },
+  { id: 'eng_prod', name: 'Engenharia de Produção', totalHours: 180 },
+];
 
 export const CATEGORY_RULES: Record<string, CategoryRule> = {
   ensino: {
     id: 'ensino',
-    name: 'Ensino / Monitoria',
-    description: 'Monitoria de disciplinas, cursos de extensão assistidos ou ministrados, disciplinas eletivas fora da grade.',
+    name: 'Ensino & Cursos',
+    description: 'Monitoria de disciplinas, minicursos assistidos ou ministrados, disciplinas eletivas fora do currículo.',
     minHours: 20,
     maxHours: 80,
-    color: 'emerald',
-    badgeBg: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800',
+    color: 'red',
+    badgeBg: 'bg-red-100 text-red-900 dark:bg-red-950/80 dark:text-red-200 border-red-300 dark:border-red-800',
   },
   pesquisa: {
     id: 'pesquisa',
-    name: 'Pesquisa / Iniciação Científica',
-    description: 'Iniciação Científica (IC), publicação de artigos, participação em congressos científicos, auxílio em laboratórios.',
+    name: 'Pesquisa & Iniciação Científica',
+    description: 'Iniciação Científica (IC), publicação de artigos, participação em congressos e simpósios.',
     minHours: 30,
     maxHours: 100,
-    color: 'sky',
-    badgeBg: 'bg-sky-100 text-sky-800 dark:bg-sky-950/60 dark:text-sky-300 border-sky-300 dark:border-sky-800',
+    color: 'amber',
+    badgeBg: 'bg-amber-100 text-amber-900 dark:bg-amber-950/80 dark:text-amber-200 border-amber-300 dark:border-amber-800',
   },
   extensao: {
     id: 'extensao',
-    name: 'Extensão / Eventos & Projetos',
-    description: 'Participação na SeCoT, projetos sociais, hackathons, maratonas de programação, organização de eventos universitários.',
+    name: 'Extensão & Hackathons',
+    description: 'Participação na SeCoT, projetos sociais, hackathons, maratonas de programação e workshops.',
     minHours: 30,
     maxHours: 100,
-    color: 'indigo',
-    badgeBg: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-950/60 dark:text-indigo-300 border-indigo-300 dark:border-indigo-800',
+    color: 'slate',
+    badgeBg: 'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-slate-100 border-slate-300 dark:border-slate-700',
   },
   vivencia: {
     id: 'vivencia',
-    name: 'Vivência Universitária / Representação',
-    description: 'Centro Acadêmico (CA), Empresa Júnior, representação discente em colegiado, voluntariado acadêmico.',
+    name: 'Vivência Universitária & Representação',
+    description: 'Centro Acadêmico (CACo), Empresa Júnior, representação discente em colegiados e voluntariado.',
     minHours: 10,
     maxHours: 50,
-    color: 'amber',
-    badgeBg: 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border-amber-300 dark:border-amber-800',
+    color: 'stone',
+    badgeBg: 'bg-stone-100 text-stone-900 dark:bg-stone-800 dark:text-stone-200 border-stone-300 dark:border-stone-700',
   },
 };
 
@@ -63,9 +71,10 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
     fileName: 'certificado_secot_2024.pdf',
     fileSize: '1.2 MB',
     status: 'approved',
-    feedback: 'Certificado verificado e homologado pela coordenação.',
+    feedback: 'Certificado verificado e homologado pela coordenação do curso.',
     createdAt: '2024-09-21T10:00:00Z',
     tags: ['SeCoT', 'Palestras', 'UFSCar'],
+    verificationCode: 'UFSCAR-2024-SEC-98123',
   },
   {
     id: 'cert-2',
@@ -79,9 +88,10 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
     fileName: 'declaracao_ic_cnpq.pdf',
     fileSize: '850 KB',
     status: 'approved',
-    feedback: 'Relatório final de IC aprovado.',
+    feedback: 'Relatório final de IC aprovado pelo comitê.',
     createdAt: '2024-08-16T14:20:00Z',
     tags: ['IC', 'CNPq', 'Artigo'],
+    verificationCode: 'UFSCAR-2024-CNPQ-44102',
   },
   {
     id: 'cert-3',
@@ -98,6 +108,7 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
     feedback: 'Aprovado sem ressalvas.',
     createdAt: '2024-07-06T09:15:00Z',
     tags: ['Monitoria', 'AED1'],
+    verificationCode: 'UFSCAR-2024-AED-12004',
   },
   {
     id: 'cert-4',
@@ -112,6 +123,7 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
     status: 'submitted',
     createdAt: '2024-10-26T11:00:00Z',
     tags: ['Hackathon', 'WorkWiser', 'Premiação'],
+    verificationCode: 'UFSCAR-2024-HACK-88391',
   },
   {
     id: 'cert-5',
@@ -126,6 +138,7 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
     status: 'submitted',
     createdAt: '2024-06-11T16:45:00Z',
     tags: ['Representação', 'CACo'],
+    verificationCode: 'UFSCAR-2024-CACO-55102',
   },
   {
     id: 'cert-6',
@@ -140,6 +153,7 @@ export const INITIAL_CERTIFICATES: Certificate[] = [
     status: 'draft',
     createdAt: '2024-05-13T08:30:00Z',
     tags: ['Acessibilidade', 'Curso Online'],
+    verificationCode: 'UFSCAR-2024-ALU-90211',
   },
 ];
 
@@ -150,7 +164,44 @@ export const INITIAL_BATCHES: SubmissionBatch[] = [
     certificateIds: ['cert-1', 'cert-2', 'cert-3'],
     totalHours: 130,
     status: 'approved',
-    secretariaNote: 'Lote homologado e lançado no Histórico Escolar (SIGA).',
+    secretariaNote: 'Lote homologado e lançado no Histórico Escolar do aluno.',
     recipientEmail: 'secretaria.bcc@ufscar.br',
+    protocolNumber: 'PROT-UFSCAR-2024-001882',
+  },
+];
+
+export const INITIAL_AUDIT_LOGS: AuditLogItem[] = [
+  {
+    id: 'log-1',
+    timestamp: '2024-09-22T14:05:00Z',
+    action: 'Lote de Horas Homologado',
+    userRole: 'professor',
+    details: 'Prof. Dr. Alexandre Zamberlan aprovou 130h complementares (Lote PROT-UFSCAR-2024-001882).',
+  },
+  {
+    id: 'log-2',
+    timestamp: '2024-10-26T11:00:00Z',
+    action: 'Certificado Enviado',
+    userRole: 'student',
+    details: 'Lucas Ferreira Silva enviou "Hackathon WorkWiser + SeCoT 2024" (24h) para validação.',
+  },
+];
+
+export const UFSCAR_FAQ = [
+  {
+    q: 'Quantas horas complementares preciso entregar para me formar?',
+    a: 'No Bacharelado em Ciência da Computação (BCC) do Campus Sorocaba, são exigidas no mínimo 200 horas de atividades complementares divididas entre Ensino, Pesquisa, Extensão e Vivência.',
+  },
+  {
+    q: 'Como funciona a divisão por categoria?',
+    a: 'Cada grupo tem limites mínimos e máximos. Por exemplo: Ensino (mín 20h / máx 80h), Pesquisa (mín 30h / máx 100h), Extensão (mín 30h / máx 100h) e Vivência (mín 10h / máx 50h).',
+  },
+  {
+    q: 'Preciso entregar os comprovantes impressos?',
+    a: 'Com este protótipo, você pode gerar um lote digital com código QR e hash de validação e enviá-lo por e-mail ou gerar o relatório em PDF com layout padrão oficial da UFSCar.',
+  },
+  {
+    q: 'Como o professor/secretaria analisa meus certificados?',
+    a: 'O avaliador acessa o painel de validação (Portal Secretaria), visualiza os arquivos anexos, atribui a carga horária aprovada e insere pareceres com justificativa.',
   },
 ];

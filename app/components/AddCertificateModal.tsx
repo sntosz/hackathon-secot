@@ -6,7 +6,7 @@ import { useAppState } from '../context/AppStateContext';
 import { useAccessibility } from '../context/AccessibilityContext';
 import { CATEGORY_RULES } from '../data/mockData';
 import { CategoryId } from '../types';
-import { UploadCloud, Sparkles, CheckCircle2, FileText, AlertCircle, Info } from 'lucide-react';
+import { UploadCloud, Sparkles, CheckCircle2, Info } from 'lucide-react';
 
 interface AddCertificateModalProps {
   isOpen: boolean;
@@ -28,7 +28,6 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
   const [isScanning, setIsScanning] = useState(false);
   const [scanSuccess, setScanSuccess] = useState(false);
 
-  // Simulated AI File Extraction Feature
   const handleSimulateUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -36,13 +35,12 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
     setFileName(file.name);
     setIsScanning(true);
     setScanSuccess(false);
-    announce('Analisando documento com Inteligência Artificial para extração automática...');
+    announce('Analisando documento com Leitor Inteligente (OCR) para extração automática...');
 
     setTimeout(() => {
       setIsScanning(false);
       setScanSuccess(true);
 
-      // Pre-fill fields smartly based on mock file name / heuristics
       if (file.name.toLowerCase().includes('secot') || file.name.toLowerCase().includes('semana')) {
         setTitle('XIX SeCoT - Semana da Computação UFSCar');
         setIssuer('Departamento de Computação UFSCar');
@@ -57,12 +55,12 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
         setTagsInput('Monitoria, Programação');
       } else {
         setTitle(`Certificado de ${file.name.replace(/\.[^/.]+$/, "")}`);
-        setIssuer('UFSCar / Organização Concedente');
+        setIssuer('UFSCar / Instituição Concedente');
         setHoursRequested(15);
         setTagsInput('Certificado, UFSCar');
       }
 
-      announce('Extração concluída com sucesso! Os campos foram preenchidos automaticamente.');
+      announce('Extração concluída com sucesso! Os campos foram preenchidos.');
     }, 1200);
   };
 
@@ -92,7 +90,6 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
       tags,
     });
 
-    // Reset Form
     setTitle('');
     setIssuer('');
     setFileName('');
@@ -107,14 +104,14 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Cadastrar Novo Certificado / Comprovante"
-      ariaDescription="Formulário para registrar certificado de atividade complementar com opção de extração automática de PDF."
+      title="Cadastrar Novo Comprovante / Certificado"
+      ariaDescription="Formulário para registrar atividade complementar com simulador de leitor inteligente OCR de PDF."
       maxWidth="xl"
     >
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5 text-slate-900 dark:text-slate-100">
 
-        {/* Upload Simulation Zone */}
-        <div className="bg-slate-50 dark:bg-slate-800/60 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl p-5 text-center transition-colors hover:border-emerald-500">
+        {/* Upload Simulation Dropzone */}
+        <div className="bg-slate-50 dark:bg-slate-800/80 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-5 text-center transition-colors hover:border-[#9e1b22]">
           <input
             type="file"
             id="certificate-file"
@@ -124,42 +121,42 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
           />
 
           {isScanning ? (
-            <div className="flex flex-col items-center gap-2 py-2 text-emerald-600 dark:text-emerald-400">
+            <div className="flex flex-col items-center gap-2 py-2 text-[#9e1b22] dark:text-red-400">
               <Sparkles className="w-8 h-8 animate-spin" />
-              <p className="text-xs font-bold">Extraindo dados com Leitor Inteligente (OCR)...</p>
+              <p className="text-xs font-extrabold">Extraindo dados do PDF com Leitor Inteligente (OCR)...</p>
             </div>
           ) : scanSuccess ? (
             <div className="flex flex-col items-center gap-2 py-1 text-emerald-700 dark:text-emerald-300">
               <CheckCircle2 className="w-8 h-8 text-emerald-500" />
               <div>
                 <p className="text-xs font-bold">{fileName}</p>
-                <p className="text-[11px] text-emerald-600 dark:text-emerald-400">
-                  ✨ Dados do PDF identificados e preenchidos abaixo!
+                <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
+                  ✨ Dados identificados e preenchidos abaixo!
                 </p>
               </div>
             </div>
           ) : (
             <label
               htmlFor="certificate-file"
-              className="cursor-pointer flex flex-col items-center gap-2 py-1 text-slate-600 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400"
+              className="cursor-pointer flex flex-col items-center gap-2 py-1 text-slate-600 dark:text-slate-300 hover:text-[#9e1b22]"
             >
-              <UploadCloud className="w-8 h-8 text-emerald-600 dark:text-emerald-400" />
+              <UploadCloud className="w-8 h-8 text-[#9e1b22] dark:text-red-400" />
               <div>
-                <span className="font-bold text-sm text-emerald-700 dark:text-emerald-400 underline">
-                  Clique aqui para selecionar o certificado PDF/Imagem
+                <span className="font-extrabold text-sm text-[#9e1b22] dark:text-red-400 underline">
+                  Clique aqui para selecionar o PDF/Imagem do certificado
                 </span>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  Suporta leitor automático de horas e título.
+                  Suporta preenchimento automático de carga horária e emissor.
                 </p>
               </div>
             </label>
           )}
         </div>
 
-        {/* Certificate Title */}
+        {/* Title */}
         <div className="space-y-1">
-          <label htmlFor="cert-title" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
-            Título da Atividade ou Evento <span className="text-rose-500">*</span>
+          <label htmlFor="cert-title" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+            Título da Atividade <span className="text-rose-500">*</span>
           </label>
           <input
             id="cert-title"
@@ -167,16 +164,16 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Ex: XVIII SeCoT - Palestra sobre Engenharia de Software"
-            className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+            placeholder="Ex: XIX SeCoT - Palestra sobre Arquitetura de Software"
+            className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#9e1b22]"
           />
         </div>
 
         {/* Issuer and Hours */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1">
-            <label htmlFor="cert-issuer" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
-              Instituição / Emissor <span className="text-rose-500">*</span>
+            <label htmlFor="cert-issuer" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+              Instituição Emissora <span className="text-rose-500">*</span>
             </label>
             <input
               id="cert-issuer"
@@ -185,12 +182,12 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
               value={issuer}
               onChange={(e) => setIssuer(e.target.value)}
               placeholder="Ex: Departamento de Computação UFSCar"
-              className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+              className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#9e1b22]"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="cert-hours" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+            <label htmlFor="cert-hours" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
               Carga Horária (Horas) <span className="text-rose-500">*</span>
             </label>
             <input
@@ -201,38 +198,38 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
               required
               value={hoursRequested}
               onChange={(e) => setHoursRequested(Number(e.target.value))}
-              className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+              className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-extrabold text-[#9e1b22] dark:text-red-400 focus:ring-2 focus:ring-[#9e1b22]"
             />
           </div>
         </div>
 
-        {/* Category Selector */}
+        {/* Category */}
         <div className="space-y-1">
-          <label htmlFor="cert-category" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
-            Categoria da Atividade (Regulamento UFSCar) <span className="text-rose-500">*</span>
+          <label htmlFor="cert-category" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+            Categoria (Norma UFSCar) <span className="text-rose-500">*</span>
           </label>
           <select
             id="cert-category"
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value as CategoryId)}
-            className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500 focus:outline-hidden"
+            className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold focus:ring-2 focus:ring-[#9e1b22]"
           >
             {Object.values(CATEGORY_RULES).map((cat) => (
               <option key={cat.id} value={cat.id}>
-                {cat.name} (Mín: {cat.minHours}h / Máx: {cat.maxHours}h)
+                {cat.name} (Piso Mín: {cat.minHours}h / Teto Máx: {cat.maxHours}h)
               </option>
             ))}
           </select>
-          <p className="text-xs text-slate-500 dark:text-slate-400 flex items-start gap-1 pt-0.5">
-            <Info className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+          <p className="text-xs text-slate-500 dark:text-slate-400 flex items-start gap-1 pt-0.5 font-medium">
+            <Info className="w-3.5 h-3.5 text-[#9e1b22] shrink-0 mt-0.5" />
             <span>{currentCategoryRule?.description}</span>
           </p>
         </div>
 
-        {/* Dates */}
+        {/* Dates and Tags */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="space-y-1">
-            <label htmlFor="cert-issue-date" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+            <label htmlFor="cert-issue-date" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
               Data de Emissão
             </label>
             <input
@@ -240,39 +237,38 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
               type="date"
               value={issueDate}
               onChange={(e) => setIssueDate(e.target.value)}
-              className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#9e1b22]"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="cert-tags" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
-              Etiquetas / Tags (Separadas por vírgula)
+            <label htmlFor="cert-tags" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+              Etiquetas / Tags
             </label>
             <input
               id="cert-tags"
               type="text"
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
-              placeholder="Ex: SeCoT, Hackathon, Presencial"
-              className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-lg text-sm text-slate-900 dark:text-white focus:ring-2 focus:ring-emerald-500"
+              placeholder="Ex: SeCoT, Hackathon, Evento"
+              className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#9e1b22]"
             />
           </div>
         </div>
 
-        {/* Actions */}
         <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-semibold transition-colors"
+            className="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-bold"
           >
             Cancelar
           </button>
           <button
             type="submit"
-            className="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl text-sm shadow-md transition-transform hover:scale-105 active:scale-95 focus:ring-2 focus:ring-emerald-500"
+            className="px-5 py-2.5 bg-[#9e1b22] hover:bg-[#800000] text-white font-extrabold rounded-xl text-sm shadow-md transition-transform hover:scale-105 active:scale-95 focus:ring-2 focus:ring-amber-400"
           >
-            Salvar em Rascunho
+            Salvar Registro
           </button>
         </div>
 

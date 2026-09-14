@@ -1,27 +1,38 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
+  --background: #f8fafc;
   --foreground: #0f172a;
+  --ufscar-red: #9e1b22;
+  --ufscar-red-dark: #7a1218;
+  --ufscar-gold: #d97706;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+.dark {
+  --background: #090d16;
+  --foreground: #f1f5f9;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Accessibility Focus Style */
 *:focus-visible {
-  outline: 3px solid #2563eb !important;
+  outline: 3px solid #d97706 !important;
   outline-offset: 3px !important;
-  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.3) !important;
+  box-shadow: 0 0 0 5px rgba(217, 119, 6, 0.3) !important;
 }
 
 /* High Contrast Mode */
 html.high-contrast {
   --background: #000000 !important;
   --foreground: #ffffff !important;
-  filter: contrast(130%);
+  filter: contrast(140%);
 }
 
 html.high-contrast * {
@@ -41,6 +52,10 @@ html.font-dyslexic {
 }
 
 /* Font Sizing */
+html.text-size-normal {
+  font-size: 100%;
+}
+
 html.text-size-large {
   font-size: 112.5%; /* 18px base */
 }
@@ -74,7 +89,7 @@ html.reduce-motion * {
   position: absolute;
   top: -40px;
   left: 10px;
-  background: #1e3a8a;
+  background: #9e1b22;
   color: white;
   padding: 8px 16px;
   z-index: 9999;

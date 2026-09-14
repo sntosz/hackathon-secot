@@ -28,7 +28,6 @@ export const Modal: React.FC<ModalProps> = ({
       previousFocusRef.current = document.activeElement as HTMLElement;
       document.body.style.overflow = 'hidden';
 
-      // Focus modal container for keyboard users
       setTimeout(() => {
         modalRef.current?.focus();
       }, 50);
@@ -73,17 +72,16 @@ export const Modal: React.FC<ModalProps> = ({
         aria-modal="true"
         aria-labelledby="modal-title"
         aria-describedby={ariaDescription ? 'modal-description' : undefined}
-        className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl shadow-2xl w-full ${widthClasses} overflow-hidden transform transition-all focus:outline-hidden`}
+        className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-2xl w-full ${widthClasses} overflow-hidden transform transition-all focus:outline-hidden`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Header */}
-        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/50">
-          <h2 id="modal-title" className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+        <div className="px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-slate-50 dark:bg-slate-900/80">
+          <h2 id="modal-title" className="text-lg font-extrabold text-slate-900 dark:text-white flex items-center gap-2">
             {title}
           </h2>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:ring-2 focus:ring-emerald-500"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:ring-2 focus:ring-amber-400"
             aria-label="Fechar janela modal"
           >
             <X className="w-5 h-5" />
@@ -96,7 +94,6 @@ export const Modal: React.FC<ModalProps> = ({
           </p>
         )}
 
-        {/* Modal Body */}
         <div className="px-6 py-5 max-h-[80vh] overflow-y-auto">
           {children}
         </div>
