@@ -94,96 +94,93 @@ export const ReportsView: React.FC = () => {
   };
 
   return (
-    <div className="space-y-8 animate-fade-in text-slate-900 dark:text-slate-100">
+    <div className="space-y-5 text-slate-900 dark:text-slate-100">
 
-      {/* Official UFSCar Printable Document Paper */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
+      {/* Official UFSCar Printable Document Box */}
+      <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-md p-5 space-y-4">
 
         {/* Printable Official Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b-2 border-[#9e1b22] dark:border-red-800 pb-6">
-          <div className="space-y-1">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-300 dark:border-slate-700 pb-4">
+          <div className="space-y-0.5">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#9e1b22] text-white flex items-center justify-center font-extrabold text-lg border border-amber-400 shrink-0">
+              <div className="w-6 h-6 rounded-xs bg-[#8b0000] text-white flex items-center justify-center font-bold text-xs shrink-0">
                 U
               </div>
-              <h2 className="text-xl font-extrabold text-slate-900 dark:text-white">
-                UNIVERSIDADE FEDERAL DE SÃO CARLOS
+              <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+                Universidade Federal de São Carlos — Campus Sorocaba
               </h2>
             </div>
-            <p className="text-xs font-bold text-slate-600 dark:text-slate-400">
-              Campus Sorocaba • {profile.course}
-            </p>
-            <p className="text-xs font-semibold text-[#9e1b22] dark:text-red-400">
-              Relatório de Consolidação de Atividades Complementares
+            <p className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+              Relatório de Consolidação e Entrega de Horas Complementares
             </p>
           </div>
 
           <div className="flex flex-wrap items-center gap-2 no-print">
             <button
               onClick={handlePrint}
-              className="px-4 py-2.5 bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white font-extrabold rounded-xl text-xs flex items-center gap-1.5 shadow-xs transition-colors focus:ring-2 focus:ring-amber-400"
+              className="px-3 py-1.5 bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white font-semibold rounded-sm text-xs flex items-center gap-1.5"
             >
-              <Printer className="w-4 h-4 text-amber-300" /> Imprimir / PDF
+              <Printer className="w-3.5 h-3.5 text-amber-300" /> Imprimir / PDF
             </button>
             <button
               onClick={handleCopyShareLink}
-              className="px-4 py-2.5 bg-red-50 dark:bg-red-950 text-[#9e1b22] dark:text-red-300 border border-red-300 dark:border-red-800 hover:bg-red-100 font-bold rounded-xl text-xs flex items-center gap-1.5 transition-colors focus:ring-2 focus:ring-amber-400"
+              className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700 hover:bg-slate-200 font-semibold rounded-sm text-xs flex items-center gap-1.5"
             >
-              {copiedLink ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-              {copiedLink ? 'Link Copiado!' : 'Copiar Link para Professor'}
+              {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+              {copiedLink ? 'Link Copiado!' : 'Copiar Link Validação'}
             </button>
           </div>
         </div>
 
-        {/* Student Data Identification Block */}
-        <div className="bg-slate-50 dark:bg-slate-800/60 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+        {/* Student Data Table Block */}
+        <div className="bg-slate-50 dark:bg-slate-800 p-3 rounded-md border border-slate-200 dark:border-slate-700 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
           <div>
-            <span className="text-slate-400 block uppercase font-bold text-[10px]">Estudante</span>
-            <span className="font-extrabold text-slate-900 dark:text-white text-sm">{profile.name}</span>
+            <span className="text-slate-500 uppercase font-bold text-[10px] block">Estudante</span>
+            <span className="font-bold text-slate-900 dark:text-slate-100">{profile.name}</span>
           </div>
           <div>
-            <span className="text-slate-400 block uppercase font-bold text-[10px]">Registro Acadêmico (RA)</span>
-            <span className="font-extrabold text-slate-900 dark:text-white text-sm">{profile.ra}</span>
+            <span className="text-slate-500 uppercase font-bold text-[10px] block">Registro Acadêmico (RA)</span>
+            <span className="font-mono font-bold text-slate-900 dark:text-slate-100">{profile.ra}</span>
           </div>
           <div>
-            <span className="text-slate-400 block uppercase font-bold text-[10px]">Curso</span>
-            <span className="font-bold text-slate-800 dark:text-slate-200">{profile.course}</span>
+            <span className="text-slate-500 uppercase font-bold text-[10px] block">Curso / Matriz</span>
+            <span className="font-semibold text-slate-800 dark:text-slate-200">{profile.course}</span>
           </div>
           <div>
-            <span className="text-slate-400 block uppercase font-bold text-[10px]">Carga Horária Selecionada</span>
-            <span className="font-extrabold text-[#9e1b22] dark:text-red-400 text-sm">
-              {totalSelectedHours}h / {profile.totalHoursRequired}h
+            <span className="text-slate-500 uppercase font-bold text-[10px] block">Carga Selecionada</span>
+            <span className="font-mono font-bold text-[#8b0000] dark:text-red-400">
+              {totalSelectedHours}h / {profile.totalHoursRequired}h exigidas
             </span>
           </div>
         </div>
 
         {/* Certificate Selection Table */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           <div className="flex items-center justify-between no-print">
-            <h3 className="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2">
-              <FileText className="w-4 h-4 text-[#9e1b22] dark:text-red-400" />
-              Selecione as Atividades Comprovadas para Inclusão:
+            <h3 className="font-bold text-slate-900 dark:text-slate-100 text-xs uppercase tracking-wide flex items-center gap-1.5">
+              <FileText className="w-3.5 h-3.5 text-[#8b0000] dark:text-red-400" />
+              Seleção de Comprovantes no Relatório:
             </h3>
 
             <button
               onClick={toggleSelectAll}
-              className="text-xs text-[#9e1b22] dark:text-red-400 font-extrabold hover:underline"
+              className="text-xs text-[#8b0000] dark:text-red-400 font-bold hover:underline"
             >
               {selectedIds.length === certificates.length ? 'Desmarcar Todos' : 'Selecionar Todos'}
             </button>
           </div>
 
-          <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-2xl">
+          <div className="overflow-x-auto border border-slate-200 dark:border-slate-800 rounded-md">
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 font-extrabold uppercase border-b border-slate-200 dark:border-slate-700">
+              <thead className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold uppercase border-b border-slate-200 dark:border-slate-700">
                 <tr>
-                  <th className="py-3 px-3 no-print">Incluir</th>
-                  <th className="py-3 px-3">Atividade / Comprovante</th>
-                  <th className="py-3 px-3">Emissor</th>
-                  <th className="py-3 px-3">Categoria</th>
-                  <th className="py-3 px-3">Horas</th>
-                  <th className="py-3 px-3">Hash Verificação</th>
-                  <th className="py-3 px-3">Status</th>
+                  <th className="py-2 px-3 no-print">Item</th>
+                  <th className="py-2 px-3">Atividade / Comprovante</th>
+                  <th className="py-2 px-3">Emissor</th>
+                  <th className="py-2 px-3">Modalidade</th>
+                  <th className="py-2 px-3 text-right">Horas</th>
+                  <th className="py-2 px-3">Autenticação Digital</th>
+                  <th className="py-2 px-3 text-center">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
@@ -195,33 +192,33 @@ export const ReportsView: React.FC = () => {
                       onClick={() => toggleSelectOne(cert.id)}
                       className={`cursor-pointer transition-colors ${
                         isChecked
-                          ? 'bg-red-50/40 dark:bg-red-950/20'
-                          : 'hover:bg-slate-50 dark:hover:bg-slate-800/40 opacity-60'
+                          ? 'bg-slate-50 dark:bg-slate-800/60 font-medium'
+                          : 'opacity-50 hover:opacity-100'
                       }`}
                     >
-                      <td className="py-3 px-3 no-print">
+                      <td className="py-2 px-3 no-print">
                         {isChecked ? (
-                          <CheckSquare className="w-4 h-4 text-[#9e1b22] dark:text-red-400" />
+                          <CheckSquare className="w-3.5 h-3.5 text-[#8b0000] dark:text-red-400" />
                         ) : (
-                          <Square className="w-4 h-4 text-slate-400" />
+                          <Square className="w-3.5 h-3.5 text-slate-400" />
                         )}
                       </td>
-                      <td className="py-3 px-3 font-bold text-slate-900 dark:text-slate-100">
+                      <td className="py-2 px-3 font-bold text-slate-900 dark:text-slate-100">
                         {cert.title}
                       </td>
-                      <td className="py-3 px-3 text-slate-600 dark:text-slate-400 font-medium">
+                      <td className="py-2 px-3 text-slate-600 dark:text-slate-400">
                         {cert.issuer}
                       </td>
-                      <td className="py-3 px-3">
+                      <td className="py-2 px-3">
                         <CategoryBadge categoryId={cert.categoryId} />
                       </td>
-                      <td className="py-3 px-3 font-extrabold text-[#9e1b22] dark:text-red-400">
+                      <td className="py-2 px-3 text-right font-mono font-bold text-[#8b0000] dark:text-red-400">
                         {cert.hoursRequested}h
                       </td>
-                      <td className="py-3 px-3 font-mono text-[10px] text-slate-500">
+                      <td className="py-2 px-3 font-mono text-[10px] text-slate-500">
                         {cert.verificationCode || 'UFSCAR-2024-HASH'}
                       </td>
-                      <td className="py-3 px-3">
+                      <td className="py-2 px-3 text-center">
                         <StatusBadge status={cert.status} />
                       </td>
                     </tr>
@@ -232,23 +229,19 @@ export const ReportsView: React.FC = () => {
           </div>
         </div>
 
-        {/* Official Crimson Email Submission Block */}
+        {/* Corporate Email Submission Form */}
         <form
           onSubmit={handleSubmitByEmail}
-          className="bg-gradient-to-r from-[#7a1218] to-[#9e1b22] text-white p-6 rounded-2xl space-y-4 no-print shadow-xl border border-red-800"
+          className="bg-slate-100 dark:bg-slate-800 p-4 rounded-md space-y-3 no-print border border-slate-300 dark:border-slate-700"
         >
           <div className="flex items-center gap-2">
-            <Mail className="w-5 h-5 text-amber-300" />
-            <h3 className="text-base font-extrabold">
-              Enviar Solicitação Digital com Protocolo para a Secretaria / Docente
+            <Mail className="w-4 h-4 text-[#8b0000] dark:text-red-400" />
+            <h3 className="text-xs font-bold uppercase tracking-wide text-slate-900 dark:text-slate-100">
+              Protocolar Entrega Digital via E-mail Institucional
             </h3>
           </div>
 
-          <p className="text-xs text-red-100 leading-relaxed max-w-2xl font-medium">
-            Gera um número de protocolo com hash de autenticação e envia o resumo com anexos diretamente ao e-mail institucional responsável.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+          <div className="flex flex-col sm:flex-row items-center gap-2">
             <div className="w-full flex-1">
               <label htmlFor="recipient-email" className="sr-only">E-mail do destinatário</label>
               <input
@@ -257,23 +250,23 @@ export const ReportsView: React.FC = () => {
                 required
                 value={recipientEmail}
                 onChange={(e) => setRecipientEmail(e.target.value)}
-                placeholder="Ex: secretaria.bcc@ufscar.br ou docente@ufscar.br"
-                className="w-full px-4 py-2.5 bg-red-950 border border-red-700 rounded-xl text-sm text-white font-medium focus:ring-2 focus:ring-amber-300"
+                placeholder="secretaria.bcc@ufscar.br ou docente@ufscar.br"
+                className="w-full px-3 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-sm text-xs text-slate-900 dark:text-slate-100 focus:ring-1 focus:ring-slate-500 font-medium"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full sm:w-auto px-6 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold rounded-xl text-sm transition-transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 shadow-md"
+              className="w-full sm:w-auto px-4 py-1.5 bg-[#8b0000] hover:bg-[#700000] text-white font-semibold rounded-sm text-xs flex items-center justify-center gap-1.5 border border-red-900"
             >
-              <Send className="w-4 h-4" /> Enviar Relatório Oficial
+              <Send className="w-3.5 h-3.5 text-amber-300" /> Enviar Protocolo Oficial
             </button>
           </div>
 
           {emailSent && (
-            <div className="p-3.5 bg-emerald-900 text-emerald-100 rounded-xl text-xs font-bold flex items-center gap-2 animate-bounce border border-emerald-700">
-              <ShieldCheck className="w-4 h-4 text-emerald-300" />
-              Solicitação enviada e registrada no histórico com sucesso!
+            <div className="p-2.5 bg-emerald-100 dark:bg-emerald-950/80 text-emerald-900 dark:text-emerald-200 rounded-sm text-xs font-bold flex items-center gap-2 border border-emerald-300 dark:border-emerald-800">
+              <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              Solicitação protocolada com sucesso no sistema da UFSCar!
             </div>
           )}
         </form>

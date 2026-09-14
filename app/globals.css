@@ -5,14 +5,14 @@
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
-  --ufscar-red: #9e1b22;
-  --ufscar-red-dark: #7a1218;
+  --ufscar-red: #8b0000;
+  --ufscar-red-dark: #660000;
   --ufscar-gold: #d97706;
 }
 
 .dark {
-  --background: #090d16;
-  --foreground: #f1f5f9;
+  --background: #0f172a;
+  --foreground: #f8fafc;
 }
 
 body {

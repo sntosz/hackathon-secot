@@ -85,67 +85,69 @@ export const Navbar: React.FC<NavbarProps> = ({
         Pular para o conteúdo principal (Alt + 1)
       </a>
 
-      {/* Top Bar - Official UFSCar Red Accessibility & System Toolbar */}
-      <div className="bg-[#7a1218] dark:bg-slate-950 text-white text-xs py-2 px-4 border-b border-[#9e1b22] dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 no-print shadow-xs">
+      {/* Top Bar - Academic Institutional Utility Header */}
+      <div className="bg-[#660000] dark:bg-slate-950 text-slate-100 text-xs py-1.5 px-4 border-b border-[#8b0000] dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 no-print">
         <div className="flex items-center gap-3">
-          <span className="flex items-center gap-1.5 font-bold tracking-wide text-amber-300">
-            <ShieldCheck className="w-4 h-4 text-amber-400" /> UFSCar • Sistema de Horas Complementares
+          <span className="flex items-center gap-1.5 font-bold tracking-tight text-white">
+            <ShieldCheck className="w-3.5 h-3.5 text-amber-400" /> UFSCar • Sistema de Gestão de Horas Complementares
           </span>
-          <span className="hidden md:inline text-red-300/40">|</span>
-          <span className="hidden md:inline text-red-100 text-[11px]">
-            WCAG 2.1 AAA Integrado
+          <span className="hidden md:inline text-red-300/30">|</span>
+          <span className="hidden md:inline text-slate-200 text-[11px] font-mono">
+            Campus Sorocaba
           </span>
         </div>
 
-        {/* Accessibility Tools Menu */}
-        <div className="flex items-center gap-2 flex-wrap">
+        {/* Accessibility & System Actions */}
+        <div className="flex items-center gap-1.5 flex-wrap">
           {/* Theme Switcher Toggle */}
           <button
             onClick={toggleTheme}
             aria-label={`Mudar para modo ${settings.theme === 'dark' ? 'claro' : 'escuro'}`}
-            className="p-1.5 rounded bg-[#9e1b22] hover:bg-[#800000] dark:bg-slate-800 dark:hover:bg-slate-700 text-white transition-colors flex items-center gap-1 focus:ring-2 focus:ring-amber-300"
+            className="px-2 py-1 rounded-sm bg-[#8b0000] hover:bg-[#700000] dark:bg-slate-800 dark:hover:bg-slate-700 text-white transition-colors flex items-center gap-1 border border-red-800/80 dark:border-slate-700 text-[11px] font-medium"
             title="Alternar Tema Claro / Escuro"
           >
             {settings.theme === 'dark' ? (
-              <Sun className="w-3.5 h-3.5 text-amber-300" />
+              <Sun className="w-3 h-3 text-amber-300" />
             ) : (
-              <Moon className="w-3.5 h-3.5 text-amber-200" />
+              <Moon className="w-3 h-3 text-amber-200" />
             )}
-            <span className="hidden sm:inline font-semibold">{settings.theme === 'dark' ? 'Modo Claro' : 'Modo Escuro'}</span>
+            <span className="hidden sm:inline">{settings.theme === 'dark' ? 'Modo Claro' : 'Modo Escuro'}</span>
           </button>
 
           {/* High Contrast Toggle */}
           <button
             onClick={toggleHighContrast}
             aria-pressed={settings.highContrast}
-            className={`p-1.5 rounded transition-colors flex items-center gap-1 focus:ring-2 focus:ring-amber-300 ${
-              settings.highContrast ? 'bg-amber-400 text-black font-extrabold' : 'bg-[#9e1b22] dark:bg-slate-800 hover:bg-[#800000] text-white'
+            className={`px-2 py-1 rounded-sm transition-colors flex items-center gap-1 text-[11px] font-medium border ${
+              settings.highContrast
+                ? 'bg-amber-400 text-black border-amber-500 font-bold'
+                : 'bg-[#8b0000] dark:bg-slate-800 hover:bg-[#700000] text-white border-red-800/80 dark:border-slate-700'
             }`}
             title="Alternar Alto Contraste"
           >
-            <Eye className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline font-semibold">Alto Contraste</span>
+            <Eye className="w-3 h-3" />
+            <span className="hidden sm:inline">Alto Contraste</span>
           </button>
 
           {/* Font Sizing Controls */}
-          <div className="flex items-center bg-[#9e1b22] dark:bg-slate-800 rounded p-0.5 border border-red-800/60 dark:border-slate-700" role="group" aria-label="Ajustar tamanho da fonte">
+          <div className="flex items-center bg-[#8b0000] dark:bg-slate-800 rounded-sm p-0.5 border border-red-800/80 dark:border-slate-700 text-[11px]" role="group" aria-label="Ajustar tamanho da fonte">
             <button
               onClick={() => setFontSize('normal')}
-              className={`px-1.5 py-0.5 rounded text-xs font-bold ${settings.fontSize === 'normal' ? 'bg-amber-400 text-black' : 'text-slate-200 hover:text-white'}`}
+              className={`px-1.5 py-0.2 rounded-xs font-semibold ${settings.fontSize === 'normal' ? 'bg-amber-400 text-black' : 'text-slate-200 hover:text-white'}`}
               aria-label="Tamanho de fonte normal"
             >
               A
             </button>
             <button
               onClick={() => setFontSize('large')}
-              className={`px-1.5 py-0.5 rounded text-xs font-bold ${settings.fontSize === 'large' ? 'bg-amber-400 text-black' : 'text-slate-200 hover:text-white'}`}
+              className={`px-1.5 py-0.2 rounded-xs font-semibold ${settings.fontSize === 'large' ? 'bg-amber-400 text-black' : 'text-slate-200 hover:text-white'}`}
               aria-label="Tamanho de fonte grande"
             >
               A+
             </button>
             <button
               onClick={() => setFontSize('xlarge')}
-              className={`px-1.5 py-0.5 rounded text-xs font-bold ${settings.fontSize === 'xlarge' ? 'bg-amber-400 text-black' : 'text-slate-200 hover:text-white'}`}
+              className={`px-1.5 py-0.2 rounded-xs font-semibold ${settings.fontSize === 'xlarge' ? 'bg-amber-400 text-black' : 'text-slate-200 hover:text-white'}`}
               aria-label="Tamanho de fonte muito grande"
             >
               A++
@@ -156,63 +158,65 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             onClick={toggleDyslexicFont}
             aria-pressed={settings.dyslexicFont}
-            className={`p-1.5 rounded transition-colors flex items-center gap-1 ${
-              settings.dyslexicFont ? 'bg-amber-400 text-black font-bold' : 'bg-[#9e1b22] dark:bg-slate-800 hover:bg-[#800000] text-slate-200'
+            className={`px-2 py-1 rounded-sm transition-colors flex items-center gap-1 text-[11px] font-medium border ${
+              settings.dyslexicFont
+                ? 'bg-amber-400 text-black border-amber-500 font-bold'
+                : 'bg-[#8b0000] dark:bg-slate-800 hover:bg-[#700000] text-white border-red-800/80 dark:border-slate-700'
             }`}
             title="Ativar fonte especial para dislexia"
           >
-            <Type className="w-3.5 h-3.5" />
-            <span className="hidden lg:inline font-semibold">Dislexia</span>
+            <Type className="w-3 h-3" />
+            <span className="hidden lg:inline">Dislexia</span>
           </button>
 
           {/* FAQ & Guide Button */}
           <button
             onClick={onOpenFAQModal}
-            className="p-1.5 bg-[#9e1b22] dark:bg-slate-800 hover:bg-[#800000] rounded text-slate-200 hover:text-white transition-colors flex items-center gap-1"
-            title="Dúvidas Frequentes & Regulamento"
+            className="px-2 py-1 bg-[#8b0000] dark:bg-slate-800 hover:bg-[#700000] text-white rounded-sm text-[11px] font-medium border border-red-800/80 dark:border-slate-700 flex items-center gap-1"
+            title="Normas & Regulamento"
           >
-            <HelpCircle className="w-3.5 h-3.5 text-amber-300" />
-            <span className="hidden lg:inline font-semibold">Guia & FAQ</span>
+            <HelpCircle className="w-3 h-3 text-amber-300" />
+            <span className="hidden lg:inline">Regulamento</span>
           </button>
 
           {/* Audit Log / History */}
           <button
             onClick={onOpenAuditModal}
-            className="p-1.5 bg-[#9e1b22] dark:bg-slate-800 hover:bg-[#800000] rounded text-slate-200 hover:text-white transition-colors flex items-center gap-1"
-            title="Histórico de Alterações"
+            className="px-2 py-1 bg-[#8b0000] dark:bg-slate-800 hover:bg-[#700000] text-white rounded-sm text-[11px] font-medium border border-red-800/80 dark:border-slate-700 flex items-center gap-1"
+            title="Auditoria"
           >
-            <History className="w-3.5 h-3.5 text-amber-300" />
-            <span className="hidden lg:inline font-semibold">Histórico</span>
+            <History className="w-3 h-3 text-amber-300" />
+            <span className="hidden lg:inline">Histórico</span>
           </button>
 
           {/* Role Switcher & Backup Dropdown */}
-          <div className="relative border-l border-red-800 dark:border-slate-800 pl-2">
+          <div className="relative border-l border-red-800 dark:border-slate-800 pl-1.5">
             <button
               onClick={() => setShowRoleMenu(!showRoleMenu)}
-              className="px-2.5 py-1 rounded bg-[#9e1b22] dark:bg-slate-800 hover:bg-[#800000] text-white border border-red-700 dark:border-slate-700 text-xs flex items-center gap-1.5 font-bold"
+              className="px-2.5 py-1 rounded-sm bg-[#8b0000] dark:bg-slate-800 hover:bg-[#700000] text-white border border-red-700 dark:border-slate-700 text-[11px] flex items-center gap-1 font-semibold"
               aria-expanded={showRoleMenu}
               aria-haspopup="true"
             >
               {activeRole === 'student' ? (
                 <>
                   <GraduationCap className="w-3.5 h-3.5 text-amber-300" />
-                  <span>Visão Aluno</span>
+                  <span>Modo Aluno</span>
                 </>
               ) : (
                 <>
                   <UserCheck className="w-3.5 h-3.5 text-amber-300" />
-                  <span>Visão Avaliador</span>
+                  <span>Modo Avaliador</span>
                 </>
               )}
             </button>
 
             {showRoleMenu && (
               <div
-                className="absolute right-0 mt-2 w-64 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl py-2 z-50 text-slate-200"
+                className="absolute right-0 mt-1 w-60 bg-slate-900 border border-slate-700 rounded-md shadow-lg py-1 z-50 text-slate-200"
                 role="menu"
               >
-                <div className="px-3 py-1 text-[10px] font-bold text-amber-400 uppercase tracking-wider">
-                  Perfil de Navegação
+                <div className="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                  Alternar Perfil
                 </div>
                 <button
                   onClick={() => {
@@ -220,15 +224,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                     setShowRoleMenu(false);
                     announce('Modo alterado para Visão do Aluno.');
                   }}
-                  className={`w-full text-left px-3 py-2 text-xs flex items-center gap-2 hover:bg-slate-800 ${
+                  className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 hover:bg-slate-800 ${
                     activeRole === 'student' ? 'bg-slate-800 font-bold text-amber-400' : ''
                   }`}
                   role="menuitem"
                 >
-                  <GraduationCap className="w-4 h-4 text-amber-400" />
+                  <GraduationCap className="w-3.5 h-3.5 text-amber-400" />
                   <div>
-                    <div className="font-bold">Aluno ({profile.name})</div>
-                    <div className="text-[10px] text-slate-400">Gerenciar atividades e relatórios</div>
+                    <div className="font-semibold">Visão do Aluno</div>
+                    <div className="text-[10px] text-slate-400">Gestão individual de horas</div>
                   </div>
                 </button>
                 <button
@@ -237,22 +241,22 @@ export const Navbar: React.FC<NavbarProps> = ({
                     setShowRoleMenu(false);
                     announce('Modo alterado para Visão da Secretaria / Docente.');
                   }}
-                  className={`w-full text-left px-3 py-2 text-xs flex items-center gap-2 hover:bg-slate-800 ${
+                  className={`w-full text-left px-3 py-1.5 text-xs flex items-center gap-2 hover:bg-slate-800 ${
                     activeRole === 'professor' ? 'bg-slate-800 font-bold text-amber-400' : ''
                   }`}
                   role="menuitem"
                 >
-                  <UserCheck className="w-4 h-4 text-amber-400" />
+                  <UserCheck className="w-3.5 h-3.5 text-amber-400" />
                   <div>
-                    <div className="font-bold">Secretaria / Docente UFSCar</div>
-                    <div className="text-[10px] text-slate-400">Validar e deferir solicitações</div>
+                    <div className="font-semibold">Visão Secretaria / Coordenação</div>
+                    <div className="text-[10px] text-slate-400">Análise e deferimento</div>
                   </div>
                 </button>
 
-                <div className="border-t border-slate-800 my-2"></div>
+                <div className="border-t border-slate-800 my-1"></div>
 
                 <div className="px-3 py-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                  Backup de Dados
+                  Gerenciamento de Dados
                 </div>
 
                 <button
@@ -263,17 +267,17 @@ export const Navbar: React.FC<NavbarProps> = ({
                   className="w-full text-left px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-800 flex items-center gap-2"
                   role="menuitem"
                 >
-                  <Download className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Exportar Backup (JSON)</span>
+                  <Download className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Exportar Dados (.json)</span>
                 </button>
 
                 <label className="w-full text-left px-3 py-1.5 text-xs text-slate-300 hover:bg-slate-800 flex items-center gap-2 cursor-pointer">
-                  <Upload className="w-3.5 h-3.5 text-amber-400" />
-                  <span>Importar Backup (JSON)</span>
+                  <Upload className="w-3.5 h-3.5 text-slate-400" />
+                  <span>Importar Dados (.json)</span>
                   <input type="file" accept=".json" onChange={handleFileUpload} className="sr-only" />
                 </label>
 
-                <div className="border-t border-slate-800 my-2"></div>
+                <div className="border-t border-slate-800 my-1"></div>
 
                 <button
                   onClick={() => {
@@ -284,7 +288,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   role="menuitem"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Restaurar Dados Demo</span>
+                  <span>Redefinir Dados Demo</span>
                 </button>
               </div>
             )}
@@ -292,96 +296,93 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
       </div>
 
-      {/* Main UFSCar Header */}
-      <header className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-40 shadow-xs no-print">
+      {/* Main Institutional Header */}
+      <header className="bg-white dark:bg-slate-900 border-b border-slate-300 dark:border-slate-800 sticky top-0 z-40 no-print">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14">
 
-            {/* UFSCar Official Crest & Title */}
+            {/* Academic Crest & Identity */}
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-[#9e1b22] text-white flex items-center justify-center font-extrabold text-2xl shadow-md border-2 border-amber-400">
+              <div className="w-8 h-8 rounded-sm bg-[#8b0000] text-white flex items-center justify-center font-bold text-lg border border-[#660000]">
                 U
               </div>
               <div>
                 <div className="flex items-center gap-2">
-                  <h1 className="text-lg font-extrabold text-slate-900 dark:text-white leading-tight">
-                    UFSCar <span className="text-[#9e1b22] dark:text-red-400">Horas</span>
+                  <h1 className="text-base font-bold text-slate-900 dark:text-slate-100 leading-tight">
+                    UFSCar <span className="text-[#8b0000] dark:text-red-400 font-semibold">| Horas Complementares</span>
                   </h1>
-                  <span className="text-[10px] bg-red-100 dark:bg-red-950 text-red-900 dark:text-red-200 font-extrabold px-2 py-0.5 rounded border border-red-300 dark:border-red-800">
-                    Sorocaba
-                  </span>
                 </div>
-                <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
+                <p className="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
                   {profile.course}
                 </p>
               </div>
             </div>
 
-            {/* Main Nav Tabs */}
-            <nav className="hidden md:flex items-center gap-1.5" aria-label="Navegação principal">
+            {/* Main Navigation Tabs */}
+            <nav className="hidden md:flex items-center gap-1" aria-label="Navegação principal">
               <button
                 onClick={() => setActiveTab('dashboard')}
                 aria-current={activeTab === 'dashboard' ? 'page' : undefined}
-                className={`px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 py-1.5 rounded-sm text-xs font-semibold transition-colors flex items-center gap-1.5 border ${
                   activeTab === 'dashboard'
-                    ? 'bg-red-50 dark:bg-red-950/50 text-[#9e1b22] dark:text-red-300 border border-red-200 dark:border-red-800'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    ? 'bg-slate-100 dark:bg-slate-800 text-[#8b0000] dark:text-red-400 border-slate-300 dark:border-slate-700'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 border-transparent'
                 }`}
               >
-                <LayoutDashboard className="w-4 h-4 text-[#9e1b22] dark:text-red-400" />
-                Painel Geral
+                <LayoutDashboard className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                Painel
               </button>
 
               <button
                 onClick={() => setActiveTab('certificates')}
                 aria-current={activeTab === 'certificates' ? 'page' : undefined}
-                className={`px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 py-1.5 rounded-sm text-xs font-semibold transition-colors flex items-center gap-1.5 border ${
                   activeTab === 'certificates'
-                    ? 'bg-red-50 dark:bg-red-950/50 text-[#9e1b22] dark:text-red-300 border border-red-200 dark:border-red-800'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    ? 'bg-slate-100 dark:bg-slate-800 text-[#8b0000] dark:text-red-400 border-slate-300 dark:border-slate-700'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 border-transparent'
                 }`}
               >
-                <FileText className="w-4 h-4 text-[#9e1b22] dark:text-red-400" />
-                Meus Certificados
+                <FileText className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                Certificados
               </button>
 
               <button
                 onClick={() => setActiveTab('reports')}
                 aria-current={activeTab === 'reports' ? 'page' : undefined}
-                className={`px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 py-1.5 rounded-sm text-xs font-semibold transition-colors flex items-center gap-1.5 border ${
                   activeTab === 'reports'
-                    ? 'bg-red-50 dark:bg-red-950/50 text-[#9e1b22] dark:text-red-300 border border-red-200 dark:border-red-800'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    ? 'bg-slate-100 dark:bg-slate-800 text-[#8b0000] dark:text-red-400 border-slate-300 dark:border-slate-700'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 border-transparent'
                 }`}
               >
-                <Share2 className="w-4 h-4 text-[#9e1b22] dark:text-red-400" />
-                Gerar Relatório & Enviar
+                <Share2 className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                Gerar Relatório
               </button>
 
               <button
                 onClick={() => setActiveTab('portal')}
                 aria-current={activeTab === 'portal' ? 'page' : undefined}
-                className={`px-3.5 py-2 rounded-xl text-sm font-bold transition-all flex items-center gap-2 ${
+                className={`px-3 py-1.5 rounded-sm text-xs font-semibold transition-colors flex items-center gap-1.5 border ${
                   activeTab === 'portal'
-                    ? 'bg-red-50 dark:bg-red-950/50 text-[#9e1b22] dark:text-red-300 border border-red-200 dark:border-red-800'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    ? 'bg-slate-100 dark:bg-slate-800 text-[#8b0000] dark:text-red-400 border-slate-300 dark:border-slate-700'
+                    : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60 border-transparent'
                 }`}
               >
-                <Building2 className="w-4 h-4 text-[#9e1b22] dark:text-red-400" />
-                Portal Secretaria/SIGA
+                <Building2 className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                Portal da Secretaria
               </button>
             </nav>
 
-            {/* Quick Primary Button */}
+            {/* Quick Action Button */}
             <div className="flex items-center gap-2">
               {activeRole === 'student' && (
                 <button
                   onClick={onOpenAddModal}
-                  className="bg-[#9e1b22] hover:bg-[#800000] text-white font-extrabold px-4 py-2 rounded-xl text-sm flex items-center gap-1.5 shadow-md transition-transform active:scale-95 focus:ring-2 focus:ring-amber-400"
-                  aria-label="Registrar novo certificado"
+                  className="bg-[#8b0000] hover:bg-[#700000] text-white font-semibold px-3 py-1.5 rounded-sm text-xs flex items-center gap-1.5 border border-red-900 shadow-xs active:bg-[#660000]"
+                  aria-label="Cadastrar Novo Certificado"
                 >
-                  <PlusCircle className="w-4 h-4 text-amber-300" />
-                  <span className="hidden sm:inline">Novo Certificado</span>
+                  <PlusCircle className="w-3.5 h-3.5 text-amber-300" />
+                  <span className="hidden sm:inline">Cadastrar Certificado</span>
                 </button>
               )}
             </div>
@@ -389,42 +390,42 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Navigation Tabs */}
-        <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 flex justify-around p-2">
+        {/* Mobile Navigation */}
+        <div className="md:hidden border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 flex justify-around p-1.5">
           <button
             onClick={() => setActiveTab('dashboard')}
-            className={`p-2 rounded text-xs flex flex-col items-center gap-1 font-bold ${
-              activeTab === 'dashboard' ? 'text-[#9e1b22] dark:text-red-400' : 'text-slate-600 dark:text-slate-400'
+            className={`px-2 py-1 rounded-sm text-xs font-semibold flex items-center gap-1 ${
+              activeTab === 'dashboard' ? 'text-[#8b0000] dark:text-red-400 font-bold' : 'text-slate-600 dark:text-slate-400'
             }`}
           >
-            <LayoutDashboard className="w-4 h-4" />
+            <LayoutDashboard className="w-3.5 h-3.5" />
             Painel
           </button>
           <button
             onClick={() => setActiveTab('certificates')}
-            className={`p-2 rounded text-xs flex flex-col items-center gap-1 font-bold ${
-              activeTab === 'certificates' ? 'text-[#9e1b22] dark:text-red-400' : 'text-slate-600 dark:text-slate-400'
+            className={`px-2 py-1 rounded-sm text-xs font-semibold flex items-center gap-1 ${
+              activeTab === 'certificates' ? 'text-[#8b0000] dark:text-red-400 font-bold' : 'text-slate-600 dark:text-slate-400'
             }`}
           >
-            <FileText className="w-4 h-4" />
+            <FileText className="w-3.5 h-3.5" />
             Certificados
           </button>
           <button
             onClick={() => setActiveTab('reports')}
-            className={`p-2 rounded text-xs flex flex-col items-center gap-1 font-bold ${
-              activeTab === 'reports' ? 'text-[#9e1b22] dark:text-red-400' : 'text-slate-600 dark:text-slate-400'
+            className={`px-2 py-1 rounded-sm text-xs font-semibold flex items-center gap-1 ${
+              activeTab === 'reports' ? 'text-[#8b0000] dark:text-red-400 font-bold' : 'text-slate-600 dark:text-slate-400'
             }`}
           >
-            <Share2 className="w-4 h-4" />
+            <Share2 className="w-3.5 h-3.5" />
             Relatórios
           </button>
           <button
             onClick={() => setActiveTab('portal')}
-            className={`p-2 rounded text-xs flex flex-col items-center gap-1 font-bold ${
-              activeTab === 'portal' ? 'text-[#9e1b22] dark:text-red-400' : 'text-slate-600 dark:text-slate-400'
+            className={`px-2 py-1 rounded-sm text-xs font-semibold flex items-center gap-1 ${
+              activeTab === 'portal' ? 'text-[#8b0000] dark:text-red-400 font-bold' : 'text-slate-600 dark:text-slate-400'
             }`}
           >
-            <Building2 className="w-4 h-4" />
+            <Building2 className="w-3.5 h-3.5" />
             Secretaria
           </button>
         </div>

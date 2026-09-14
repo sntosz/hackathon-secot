@@ -104,14 +104,14 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="Cadastrar Novo Comprovante / Certificado"
-      ariaDescription="Formulário para registrar atividade complementar com simulador de leitor inteligente OCR de PDF."
-      maxWidth="xl"
+      title="Cadastrar Comprovante de Atividade"
+      ariaDescription="Formulário para registrar atividade complementar com simulador de leitor OCR de PDF."
+      maxWidth="lg"
     >
-      <form onSubmit={handleSubmit} className="space-y-5 text-slate-900 dark:text-slate-100">
+      <form onSubmit={handleSubmit} className="space-y-3.5 text-xs text-slate-900 dark:text-slate-100">
 
         {/* Upload Simulation Dropzone */}
-        <div className="bg-slate-50 dark:bg-slate-800/80 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-2xl p-5 text-center transition-colors hover:border-[#9e1b22]">
+        <div className="bg-slate-50 dark:bg-slate-800/80 border border-dashed border-slate-300 dark:border-slate-700 rounded-sm p-3 text-center transition-colors hover:border-[#8b0000]">
           <input
             type="file"
             id="certificate-file"
@@ -121,41 +121,31 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
           />
 
           {isScanning ? (
-            <div className="flex flex-col items-center gap-2 py-2 text-[#9e1b22] dark:text-red-400">
-              <Sparkles className="w-8 h-8 animate-spin" />
-              <p className="text-xs font-extrabold">Extraindo dados do PDF com Leitor Inteligente (OCR)...</p>
+            <div className="flex items-center justify-center gap-2 py-1 text-[#8b0000] dark:text-red-400">
+              <Sparkles className="w-4 h-4 animate-spin" />
+              <p className="text-xs font-bold">Processando leitor OCR e extraindo dados...</p>
             </div>
           ) : scanSuccess ? (
-            <div className="flex flex-col items-center gap-2 py-1 text-emerald-700 dark:text-emerald-300">
-              <CheckCircle2 className="w-8 h-8 text-emerald-500" />
-              <div>
-                <p className="text-xs font-bold">{fileName}</p>
-                <p className="text-[11px] text-emerald-600 dark:text-emerald-400 font-semibold">
-                  ✨ Dados identificados e preenchidos abaixo!
-                </p>
-              </div>
+            <div className="flex items-center justify-center gap-2 py-1 text-emerald-700 dark:text-emerald-300">
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <p className="text-xs font-semibold">{fileName} — Dados preenchidos com sucesso.</p>
             </div>
           ) : (
             <label
               htmlFor="certificate-file"
-              className="cursor-pointer flex flex-col items-center gap-2 py-1 text-slate-600 dark:text-slate-300 hover:text-[#9e1b22]"
+              className="cursor-pointer flex items-center justify-center gap-2 text-slate-600 dark:text-slate-300 hover:text-[#8b0000]"
             >
-              <UploadCloud className="w-8 h-8 text-[#9e1b22] dark:text-red-400" />
-              <div>
-                <span className="font-extrabold text-sm text-[#9e1b22] dark:text-red-400 underline">
-                  Clique aqui para selecionar o PDF/Imagem do certificado
-                </span>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  Suporta preenchimento automático de carga horária e emissor.
-                </p>
-              </div>
+              <UploadCloud className="w-4 h-4 text-[#8b0000] dark:text-red-400" />
+              <span className="font-semibold text-xs text-[#8b0000] dark:text-red-400 underline">
+                Anexar documento PDF/Imagem do certificado
+              </span>
             </label>
           )}
         </div>
 
         {/* Title */}
         <div className="space-y-1">
-          <label htmlFor="cert-title" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+          <label htmlFor="cert-title" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
             Título da Atividade <span className="text-rose-500">*</span>
           </label>
           <input
@@ -165,14 +155,14 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Ex: XIX SeCoT - Palestra sobre Arquitetura de Software"
-            className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#9e1b22]"
+            className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-sm text-xs font-medium focus:ring-1 focus:ring-slate-500"
           />
         </div>
 
         {/* Issuer and Hours */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1">
-            <label htmlFor="cert-issuer" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+            <label htmlFor="cert-issuer" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
               Instituição Emissora <span className="text-rose-500">*</span>
             </label>
             <input
@@ -182,12 +172,12 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
               value={issuer}
               onChange={(e) => setIssuer(e.target.value)}
               placeholder="Ex: Departamento de Computação UFSCar"
-              className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#9e1b22]"
+              className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-sm text-xs font-medium focus:ring-1 focus:ring-slate-500"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="cert-hours" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+            <label htmlFor="cert-hours" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
               Carga Horária (Horas) <span className="text-rose-500">*</span>
             </label>
             <input
@@ -198,38 +188,38 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
               required
               value={hoursRequested}
               onChange={(e) => setHoursRequested(Number(e.target.value))}
-              className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-extrabold text-[#9e1b22] dark:text-red-400 focus:ring-2 focus:ring-[#9e1b22]"
+              className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-sm text-xs font-mono font-bold text-[#8b0000] dark:text-red-400 focus:ring-1 focus:ring-slate-500"
             />
           </div>
         </div>
 
         {/* Category */}
         <div className="space-y-1">
-          <label htmlFor="cert-category" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
-            Categoria (Norma UFSCar) <span className="text-rose-500">*</span>
+          <label htmlFor="cert-category" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+            Modalidade Acadêmica (UFSCar) <span className="text-rose-500">*</span>
           </label>
           <select
             id="cert-category"
             value={categoryId}
             onChange={(e) => setCategoryId(e.target.value as CategoryId)}
-            className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-bold focus:ring-2 focus:ring-[#9e1b22]"
+            className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-sm text-xs font-semibold focus:ring-1 focus:ring-slate-500"
           >
             {Object.values(CATEGORY_RULES).map((cat) => (
               <option key={cat.id} value={cat.id}>
-                {cat.name} (Piso Mín: {cat.minHours}h / Teto Máx: {cat.maxHours}h)
+                {cat.name} (Piso: {cat.minHours}h / Teto: {cat.maxHours}h)
               </option>
             ))}
           </select>
-          <p className="text-xs text-slate-500 dark:text-slate-400 flex items-start gap-1 pt-0.5 font-medium">
-            <Info className="w-3.5 h-3.5 text-[#9e1b22] shrink-0 mt-0.5" />
+          <p className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+            <Info className="w-3 h-3 text-[#8b0000] shrink-0" />
             <span>{currentCategoryRule?.description}</span>
           </p>
         </div>
 
         {/* Dates and Tags */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div className="space-y-1">
-            <label htmlFor="cert-issue-date" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
+            <label htmlFor="cert-issue-date" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
               Data de Emissão
             </label>
             <input
@@ -237,36 +227,36 @@ export const AddCertificateModal: React.FC<AddCertificateModalProps> = ({ isOpen
               type="date"
               value={issueDate}
               onChange={(e) => setIssueDate(e.target.value)}
-              className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#9e1b22]"
+              className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-sm text-xs font-medium focus:ring-1 focus:ring-slate-500"
             />
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="cert-tags" className="block text-xs font-bold uppercase text-slate-700 dark:text-slate-300">
-              Etiquetas / Tags
+            <label htmlFor="cert-tags" className="block text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">
+              Etiquetas (Tags)
             </label>
             <input
               id="cert-tags"
               type="text"
               value={tagsInput}
               onChange={(e) => setTagsInput(e.target.value)}
-              placeholder="Ex: SeCoT, Hackathon, Evento"
-              className="w-full px-3.5 py-2 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-sm font-medium focus:ring-2 focus:ring-[#9e1b22]"
+              placeholder="SeCoT, Hackathon, Evento"
+              className="w-full px-2.5 py-1.5 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-sm text-xs font-medium focus:ring-1 focus:ring-slate-500"
             />
           </div>
         </div>
 
-        <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-3">
+        <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-end gap-2">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-sm font-bold"
+            className="px-3 py-1.5 rounded-sm text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs font-semibold"
           >
             Cancelar
           </button>
           <button
             type="submit"
-            className="px-5 py-2.5 bg-[#9e1b22] hover:bg-[#800000] text-white font-extrabold rounded-xl text-sm shadow-md transition-transform hover:scale-105 active:scale-95 focus:ring-2 focus:ring-amber-400"
+            className="px-4 py-1.5 bg-[#8b0000] hover:bg-[#700000] text-white font-semibold rounded-sm text-xs border border-red-900"
           >
             Salvar Registro
           </button>

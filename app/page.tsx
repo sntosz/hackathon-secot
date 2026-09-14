@@ -62,24 +62,24 @@ function MainApp() {
       <Modal
         isOpen={isFAQOpen}
         onClose={() => setIsFAQOpen(false)}
-        title="Regulamento & Pergunta Frequentes (UFSCar)"
+        title="Regulamento & Normas UFSCar"
         maxWidth="lg"
       >
-        <div className="space-y-4 text-xs text-slate-800 dark:text-slate-200">
+        <div className="space-y-3 text-xs text-slate-800 dark:text-slate-200">
           {UFSCAR_FAQ.map((faq, idx) => (
-            <div key={idx} className="p-3.5 bg-slate-50 dark:bg-slate-800/80 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1">
-              <div className="font-extrabold text-[#9e1b22] dark:text-red-400 flex items-center gap-1.5 text-sm">
-                <HelpCircle className="w-4 h-4 shrink-0" />
+            <div key={idx} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 space-y-1">
+              <div className="font-bold text-[#8b0000] dark:text-red-400 flex items-center gap-1.5 text-xs uppercase tracking-wide">
+                <HelpCircle className="w-3.5 h-3.5 shrink-0" />
                 <span>{faq.q}</span>
               </div>
-              <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed pl-5">
+              <p className="text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
                 {faq.a}
               </p>
             </div>
           ))}
           <button
             onClick={() => setIsFAQOpen(false)}
-            className="w-full bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 text-white font-extrabold py-2 rounded-xl text-xs mt-2"
+            className="w-full bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white font-semibold py-1.5 rounded-sm text-xs mt-2"
           >
             Entendido
           </button>
@@ -90,46 +90,46 @@ function MainApp() {
       <Modal
         isOpen={isAuditOpen}
         onClose={() => setIsAuditOpen(false)}
-        title="Histórico de Ações & Rastreabilidade do Aluno"
+        title="Histórico Analítico de Operações"
         maxWidth="lg"
       >
-        <div className="space-y-3 text-xs text-slate-800 dark:text-slate-200">
+        <div className="space-y-2.5 text-xs text-slate-800 dark:text-slate-200">
           {auditLogs.length === 0 ? (
             <p className="text-slate-500 text-center py-4">Nenhuma ação registrada ainda.</p>
           ) : (
             auditLogs.map((log) => (
-              <div key={log.id} className="p-3 bg-slate-50 dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 space-y-1">
+              <div key={log.id} className="p-2.5 bg-slate-50 dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-700 space-y-0.5">
                 <div className="flex items-center justify-between">
-                  <span className="font-extrabold text-slate-900 dark:text-white flex items-center gap-1">
-                    <History className="w-3.5 h-3.5 text-[#9e1b22] dark:text-red-400" />
+                  <span className="font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1">
+                    <History className="w-3.5 h-3.5 text-[#8b0000] dark:text-red-400" />
                     {log.action}
                   </span>
-                  <span className="text-[10px] text-slate-400 font-mono">
+                  <span className="text-[10px] text-slate-500 font-mono">
                     {new Date(log.timestamp).toLocaleString('pt-BR')}
                   </span>
                 </div>
-                <p className="text-slate-600 dark:text-slate-300 font-medium">{log.details}</p>
+                <p className="text-slate-600 dark:text-slate-400 text-[11px] font-mono">{log.details}</p>
               </div>
             ))
           )}
           <button
             onClick={() => setIsAuditOpen(false)}
-            className="w-full bg-slate-900 dark:bg-slate-800 text-white font-extrabold py-2 rounded-xl text-xs mt-2"
+            className="w-full bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white font-semibold py-1.5 rounded-sm text-xs mt-2"
           >
             Fechar Histórico
           </button>
         </div>
       </Modal>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 py-6 text-xs text-center no-print mt-12">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+      {/* Institutional Footer */}
+      <footer className="bg-slate-900 border-t border-slate-800 text-slate-400 py-4 text-xs text-center no-print mt-10">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-2">
-            <span className="w-5 h-5 rounded bg-[#9e1b22] text-white font-extrabold text-xs flex items-center justify-center">U</span>
-            <span className="font-extrabold text-slate-200">UFSCar Sorocaba & WorkWiser Hackathon 2024</span>
+            <span className="w-4 h-4 rounded-xs bg-[#8b0000] text-white font-bold text-[10px] flex items-center justify-center">U</span>
+            <span className="font-semibold text-slate-300">UFSCar Sorocaba & WorkWiser — Gestão de Horas</span>
           </div>
-          <div className="text-slate-400 font-medium">
-            Acessibilidade WCAG 2.1 AAA • Protótipo Independente
+          <div className="text-slate-400 font-mono text-[11px]">
+            WCAG 2.1 AAA • Protótipo de Produção
           </div>
         </div>
       </footer>
