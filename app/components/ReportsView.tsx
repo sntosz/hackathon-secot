@@ -13,14 +13,13 @@ import {
   FileText,
   Copy,
   Check,
-  GraduationCap,
   ShieldCheck,
-  QrCode
+  AlertTriangle
 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export const ReportsView: React.FC = () => {
-  const { profile, certificates, submitBatch } = useAppState();
+  const { profile, certificates, submitBatch, addToast } = useAppState();
   const { announce } = useAccessibility();
 
   const [selectedIds, setSelectedIds] = useState<string[]>(
@@ -57,6 +56,10 @@ export const ReportsView: React.FC = () => {
     0
   );
 
+  const actionableCount = selectedCertificates.filter(
+    (c) => c.status === 'draft' || c.status === 'needs_info'
+  ).length;
+
   const handlePrint = () => {
     announce('Iniciando diálogo de impressão/exportação para PDF.');
     window.print();
@@ -66,7 +69,7 @@ export const ReportsView: React.FC = () => {
     const shareableUrl = `${window.location.origin}/portal?ra=${profile.ra}&token=ufscar-demo-2024`;
     navigator.clipboard.writeText(shareableUrl);
     setCopiedLink(true);
-    announce('Link público de validação copiado para a área de transferência.');
+    addToast('info', 'Link Copiado', 'Endereço do relatório público copiado para a área de transferência.');
     setTimeout(() => setCopiedLink(false), 3000);
   };
 
@@ -74,11 +77,18 @@ export const ReportsView: React.FC = () => {
     e.preventDefault();
 
     if (selectedCertificates.length === 0) {
-      announce('Selecione pelo menos uma atividade para incluir no relatório.', 'assertive');
+      addToast('error', 'Envio Bloqueado', 'Selecione ao menos um comprovante para incluir no relatório.');
+      return;
+    }
+
+    if (!recipientEmail || !recipientEmail.includes('@')) {
+      addToast('error', 'E-mail Inválido', 'Informe um e-mail institucional válido.');
       return;
     }
 
     const batch = submitBatch(selectedIds, recipientEmail);
+    if (!batch) return;
+
     setEmailSent(true);
 
     try {
@@ -89,7 +99,6 @@ export const ReportsView: React.FC = () => {
       });
     } catch (e) {}
 
-    announce(`Solicitação oficial ${batch.protocolNumber} enviada com sucesso para ${recipientEmail}!`);
     setTimeout(() => setEmailSent(false), 5000);
   };
 
@@ -159,7 +168,7 @@ export const ReportsView: React.FC = () => {
           <div className="flex items-center justify-between no-print">
             <h3 className="font-bold text-slate-900 dark:text-slate-100 text-xs uppercase tracking-wide flex items-center gap-1.5">
               <FileText className="w-3.5 h-3.5 text-[#8b0000] dark:text-red-400" />
-              Seleção de Comprovantes no Relatório:
+              Seleção de Comprovantes para Inclusão no Lote:
             </h3>
 
             <button
@@ -234,11 +243,22 @@ export const ReportsView: React.FC = () => {
           onSubmit={handleSubmitByEmail}
           className="bg-slate-100 dark:bg-slate-800 p-4 rounded-md space-y-3 no-print border border-slate-300 dark:border-slate-700"
         >
-          <div className="flex items-center gap-2">
-            <Mail className="w-4 h-4 text-[#8b0000] dark:text-red-400" />
-            <h3 className="text-xs font-bold uppercase tracking-wide text-slate-900 dark:text-slate-100">
-              Protocolar Entrega Digital via E-mail Institucional
-            </h3>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 text-[#8b0000] dark:text-red-400" />
+              <h3 className="text-xs font-bold uppercase tracking-wide text-slate-900 dark:text-slate-100">
+                Protocolar Entrega Digital via E-mail Institucional
+              </h3>
+            </div>
+            {actionableCount > 0 ? (
+              <span className="text-[11px] font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded border border-amber-300 dark:border-amber-800">
+                {actionableCount} item(ns) rascunho/pendente(s) pronto(s) para protocolo
+              </span>
+            ) : (
+              <span className="text-[11px] text-slate-500 font-medium">
+                Nenhum novo rascunho pendente no lote selecionado
+              </span>
+            )}
           </div>
 
           <div className="flex flex-col sm:flex-row items-center gap-2">
@@ -257,7 +277,12 @@ export const ReportsView: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full sm:w-auto px-4 py-1.5 bg-[#8b0000] hover:bg-[#700000] text-white font-semibold rounded-sm text-xs flex items-center justify-center gap-1.5 border border-red-900"
+              disabled={selectedCertificates.length === 0}
+              className={`w-full sm:w-auto px-4 py-1.5 font-semibold rounded-sm text-xs flex items-center justify-center gap-1.5 border ${
+                selectedCertificates.length === 0
+                  ? 'bg-slate-300 text-slate-500 border-slate-400 cursor-not-allowed'
+                  : 'bg-[#8b0000] hover:bg-[#700000] text-white border-red-900'
+              }`}
             >
               <Send className="w-3.5 h-3.5 text-amber-300" /> Enviar Protocolo Oficial
             </button>

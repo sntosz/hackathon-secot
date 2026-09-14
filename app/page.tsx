@@ -10,6 +10,7 @@ import { AddCertificateModal } from './components/AddCertificateModal';
 import { ReportsView } from './components/ReportsView';
 import { PortalView } from './components/PortalView';
 import { Modal } from './components/Modal';
+import { ToastContainer } from './components/Toast';
 import { UFSCAR_FAQ } from './data/mockData';
 import { HelpCircle, History, BookOpen, ShieldCheck } from 'lucide-react';
 
@@ -57,6 +58,9 @@ function MainApp() {
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
       />
+
+      {/* Accessible Toast Notification System */}
+      <ToastContainer />
 
       {/* FAQ & Rules Drawer Modal */}
       <Modal

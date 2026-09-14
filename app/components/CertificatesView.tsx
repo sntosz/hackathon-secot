@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { useAppState } from '../context/AppStateContext';
-import { CATEGORY_RULES, UFSCAR_FAQ } from '../data/mockData';
+import { CATEGORY_RULES } from '../data/mockData';
 import { CategoryBadge, StatusBadge } from './Badges';
-import { Modal } from './Modal';
+import { Certificate } from '../types';
+import { ActivityDetailsModal } from './ActivityDetailsModal';
+import { EditCertificateModal } from './EditCertificateModal';
 import {
   FileText,
   Trash2,
@@ -13,12 +15,8 @@ import {
   Eye,
   Plus,
   FileCheck,
-  QrCode,
-  Check,
-  Copy,
-  HelpCircle,
-  History,
-  ShieldCheck
+  Edit3,
+  RotateCcw
 } from 'lucide-react';
 
 interface CertificatesViewProps {
@@ -31,8 +29,10 @@ export const CertificatesView: React.FC<CertificatesViewProps> = ({ onOpenAddMod
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [previewCert, setPreviewCert] = useState<any | null>(null);
-  const [copiedHash, setCopiedHash] = useState(false);
+
+  const [selectedCertForDetails, setSelectedCertForDetails] = useState<Certificate | null>(null);
+  const [selectedCertForEdit, setSelectedCertForEdit] = useState<Certificate | null>(null);
+  const [deleteConfirmId, setDeleteCertForDelete] = useState<{ id: string; title: string } | null>(null);
 
   const filteredCertificates = certificates.filter((cert) => {
     const matchesSearch =
@@ -46,30 +46,31 @@ export const CertificatesView: React.FC<CertificatesViewProps> = ({ onOpenAddMod
     return matchesSearch && matchesCategory && matchesStatus;
   });
 
-  const handleDelete = (id: string, title: string) => {
-    if (confirm(`Tem certeza que deseja excluir o certificado "${title}"?`)) {
-      deleteCertificate(id);
+  const confirmDelete = () => {
+    if (deleteConfirmId) {
+      deleteCertificate(deleteConfirmId.id);
+      setDeleteCertForDelete(null);
     }
   };
 
-  const copyVerificationHash = (code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedHash(true);
-    setTimeout(() => setCopiedHash(false), 3000);
+  const clearFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory('all');
+    setSelectedStatus('all');
   };
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-5">
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
         <div>
           <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 flex items-center gap-2">
             <FileText className="w-5 h-5 text-[#8b0000] dark:text-red-400" />
-            Gestão de Certificados e Comprovantes
+            Gestão Analítica de Certificados e Comprovantes
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            Listagem analítica de atividades submetidas para aproveitamento de horas.
+            Cadastre, edite, audite e consulte suas atividades complementares de graduação.
           </p>
         </div>
 
@@ -122,8 +123,19 @@ export const CertificatesView: React.FC<CertificatesViewProps> = ({ onOpenAddMod
             <option value="approved">Aprovados</option>
             <option value="submitted">Em Análise</option>
             <option value="draft">Rascunhos</option>
+            <option value="needs_info">Pendente Correção</option>
             <option value="rejected">Indeferidos</option>
           </select>
+
+          {(searchQuery || selectedCategory !== 'all' || selectedStatus !== 'all') && (
+            <button
+              onClick={clearFilters}
+              className="p-1.5 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100"
+              title="Limpar Filtros"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
 
       </div>
@@ -136,8 +148,14 @@ export const CertificatesView: React.FC<CertificatesViewProps> = ({ onOpenAddMod
             Nenhum registro encontrado
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
-            Ajuste os filtros de pesquisa ou utilize o botão acima para cadastrar um novo comprovante.
+            Não foram encontrados certificados correspondentes aos critérios de busca selecionados.
           </p>
+          <button
+            onClick={clearFilters}
+            className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-sm text-xs font-semibold border border-slate-300 dark:border-slate-700 mt-2"
+          >
+            Limpar Filtros
+          </button>
         </div>
       ) : (
         <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-md overflow-hidden">
@@ -189,20 +207,31 @@ export const CertificatesView: React.FC<CertificatesViewProps> = ({ onOpenAddMod
                     <td className="py-2.5 px-3 text-center">
                       <div className="flex items-center justify-center gap-1">
                         <button
-                          onClick={() => setPreviewCert(cert)}
+                          onClick={() => setSelectedCertForDetails(cert)}
                           className="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-[11px] font-semibold flex items-center gap-1"
-                          title="Detalhar registro"
+                          title="Detalhes do registro"
                         >
                           <Eye className="w-3.5 h-3.5" /> Detalhes
                         </button>
-                        {cert.status === 'draft' && (
-                          <button
-                            onClick={() => handleDelete(cert.id, cert.title)}
-                            className="p-1 rounded text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40"
-                            title="Excluir"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
+
+                        {(cert.status === 'draft' || cert.status === 'needs_info') && (
+                          <>
+                            <button
+                              onClick={() => setSelectedCertForEdit(cert)}
+                              className="p-1 rounded text-slate-600 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800"
+                              title="Editar Atividade"
+                            >
+                              <Edit3 className="w-3.5 h-3.5" />
+                            </button>
+
+                            <button
+                              onClick={() => setDeleteCertForDelete({ id: cert.id, title: cert.title })}
+                              className="p-1 rounded text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40"
+                              title="Excluir Registro"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </>
                         )}
                       </div>
                     </td>
@@ -214,78 +243,46 @@ export const CertificatesView: React.FC<CertificatesViewProps> = ({ onOpenAddMod
         </div>
       )}
 
-      {/* Certificate Verification & Detail Modal */}
-      {previewCert && (
-        <Modal
-          isOpen={!!previewCert}
-          onClose={() => setPreviewCert(null)}
-          title="Ficha Analítica do Registro"
-          maxWidth="lg"
-        >
-          <div className="space-y-4 text-xs text-slate-800 dark:text-slate-200">
-            <div className="border-b border-slate-200 dark:border-slate-800 pb-2">
-              <span className="text-[10px] font-bold text-slate-500 uppercase block">Atividade / Documento</span>
-              <p className="font-bold text-slate-900 dark:text-slate-100 text-sm">{previewCert.title}</p>
-            </div>
+      {/* Activity Details Modal */}
+      <ActivityDetailsModal
+        isOpen={!!selectedCertForDetails}
+        onClose={() => setSelectedCertForDetails(null)}
+        certificate={selectedCertForDetails}
+      />
 
-            <div className="grid grid-cols-2 gap-3 border-b border-slate-200 dark:border-slate-800 pb-2">
-              <div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase block">Instituição Emissora</span>
-                <p className="font-semibold">{previewCert.issuer}</p>
-              </div>
-              <div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase block">Carga Horária Registrada</span>
-                <p className="font-mono font-bold text-[#8b0000] dark:text-red-400">{previewCert.hoursRequested}h</p>
-              </div>
-            </div>
+      {/* Edit Activity Modal */}
+      <EditCertificateModal
+        isOpen={!!selectedCertForEdit}
+        onClose={() => setSelectedCertForEdit(null)}
+        certificate={selectedCertForEdit}
+      />
 
-            <div className="grid grid-cols-2 gap-3 border-b border-slate-200 dark:border-slate-800 pb-2">
-              <div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase block">Modalidade</span>
-                <CategoryBadge categoryId={previewCert.categoryId} />
-              </div>
-              <div>
-                <span className="text-[10px] font-bold text-slate-500 uppercase block">Status de Deferimento</span>
-                <StatusBadge status={previewCert.status} />
-              </div>
-            </div>
-
-            {/* Digital Hash box */}
-            <div className="bg-slate-50 dark:bg-slate-800 p-3 rounded-md border border-slate-300 dark:border-slate-700 flex items-center justify-between gap-3">
-              <div className="space-y-0.5">
-                <span className="text-[10px] font-bold text-slate-500 uppercase block">
-                  Autenticação Digital SIGA/UFSCar
-                </span>
-                <code className="text-xs font-mono font-bold text-[#8b0000] dark:text-red-300">
-                  {previewCert.verificationCode || 'UFSCAR-2024-VER-10923'}
-                </code>
-              </div>
+      {/* Delete Confirmation Modal */}
+      {deleteConfirmId && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 no-print">
+          <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-md shadow-xl p-4 max-w-sm w-full space-y-3 text-xs">
+            <h3 className="font-bold text-slate-900 dark:text-slate-100 uppercase tracking-wide">
+              Confirmar Exclusão de Atividade
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400">
+              Tem certeza que deseja excluir permanentemente o registro <strong>"{deleteConfirmId.title}"</strong>?
+            </p>
+            <div className="flex items-center justify-end gap-2 pt-2 border-t border-slate-200 dark:border-slate-800">
               <button
-                onClick={() => copyVerificationHash(previewCert.verificationCode || 'UFSCAR-2024-VER-10923')}
-                className="px-2 py-1 rounded bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 text-[11px] font-semibold flex items-center gap-1 border border-slate-300 dark:border-slate-600"
+                onClick={() => setDeleteCertForDelete(null)}
+                className="px-3 py-1.5 rounded-sm text-slate-700 dark:text-slate-300 font-semibold"
               >
-                {copiedHash ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>Copiar Hash</span>
+                Cancelar
               </button>
-            </div>
-
-            {previewCert.feedback && (
-              <div className="p-2.5 bg-red-50 dark:bg-red-950/40 rounded-md border border-red-200 dark:border-red-900">
-                <span className="text-[10px] font-bold text-red-900 dark:text-red-200 uppercase block">Despacho / Observações do Avaliador:</span>
-                <p className="text-xs mt-0.5 text-slate-800 dark:text-slate-200 font-mono">{previewCert.feedback}</p>
-              </div>
-            )}
-
-            <div className="pt-2">
               <button
-                onClick={() => setPreviewCert(null)}
-                className="w-full bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 text-white font-semibold py-1.5 rounded-sm text-xs"
+                onClick={confirmDelete}
+                className="px-3 py-1.5 bg-rose-700 hover:bg-rose-800 text-white font-semibold rounded-sm"
               >
-                Fechar Ficha
+                Excluir Registro
               </button>
             </div>
           </div>
-        </Modal>
+        </div>
       )}
 
     </div>

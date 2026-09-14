@@ -20,6 +20,13 @@ export interface AuditLogItem {
   details: string;
 }
 
+export interface CertificateHistoryItem {
+  timestamp: string;
+  action: string;
+  role: 'student' | 'professor' | 'system';
+  details: string;
+}
+
 export interface Certificate {
   id: string;
   title: string;
@@ -35,8 +42,10 @@ export interface Certificate {
   status: CertificateStatus;
   feedback?: string;
   createdAt: string;
+  updatedAt?: string;
   tags?: string[];
   verificationCode?: string; // Digital Hash Code UFSCar
+  history?: CertificateHistoryItem[];
 }
 
 export interface StudentProfile {
@@ -69,4 +78,11 @@ export interface AccessibilitySettings {
   reduceAnimations: boolean;
   screenReaderOptimized: boolean;
   theme: 'light' | 'dark';
+}
+
+export interface ToastMessage {
+  id: string;
+  type: 'success' | 'error' | 'info' | 'warning';
+  title: string;
+  message: string;
 }

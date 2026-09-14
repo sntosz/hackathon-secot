@@ -10,3 +10,5 @@
 
  GET / 200 in 3.3s (next.js: 2.9s, application-code: 342ms)
  GET / 200 in 406ms (next.js: 66ms, application-code: 340ms)
+ GET / 200 in 781ms (next.js: 332ms, application-code: 450ms)
+ POST /api/certificates 200 in 713ms (next.js: 664ms, application-code: 49ms)

@@ -1,23 +1,22 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useAppState } from '../context/AppStateContext';
-import { CATEGORY_RULES, UFSCAR_COURSES } from '../data/mockData';
-import { CategoryId } from '../types';
-import { StatusBadge, CategoryBadge } from './Badges';
+import { UFSCAR_COURSES } from '../data/mockData';
+import { RulesEngine } from '../lib/rulesEngine';
+import { CategoryBadge, StatusBadge } from './Badges';
 import {
   Award,
   CheckCircle2,
   Clock,
-  FileCheck2,
   AlertTriangle,
-  TrendingUp,
   PlusCircle,
   Share2,
-  BookOpen,
-  Sparkles,
   ArrowRight,
-  Sliders
+  Sliders,
+  Check,
+  AlertCircle,
+  FileCheck2
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -33,49 +32,12 @@ export const DashboardView: React.FC<DashboardProps> = ({
 }) => {
   const { profile, certificates, changeCourse } = useAppState();
 
-  const approvedCertificates = certificates.filter((c) => c.status === 'approved');
-  const pendingCertificates = certificates.filter((c) => c.status === 'submitted');
-  const draftCertificates = certificates.filter((c) => c.status === 'draft');
-
-  const approvedHours = approvedCertificates.reduce(
-    (acc, c) => acc + (c.hoursApproved ?? c.hoursRequested),
-    0
-  );
-
-  const pendingHours = pendingCertificates.reduce((acc, c) => acc + c.hoursRequested, 0);
-
-  const totalRequired = profile.totalHoursRequired;
-  const progressPercent = Math.min(100, Math.round((approvedHours / totalRequired) * 100));
-  const remainingHours = Math.max(0, totalRequired - approvedHours);
-
-  // Category stats
-  const categoryStats = (Object.keys(CATEGORY_RULES) as CategoryId[]).map((catId) => {
-    const rule = CATEGORY_RULES[catId];
-    const catApprovedCerts = approvedCertificates.filter((c) => c.categoryId === catId);
-    const catPendingCerts = pendingCertificates.filter((c) => c.categoryId === catId);
-
-    const catApprovedHours = catApprovedCerts.reduce(
-      (acc, c) => acc + (c.hoursApproved ?? c.hoursRequested),
-      0
-    );
-    const catPendingHours = catPendingCerts.reduce((acc, c) => acc + c.hoursRequested, 0);
-
-    const isMinMet = catApprovedHours >= rule.minHours;
-    const isMaxExceeded = catApprovedHours > rule.maxHours;
-
-    return {
-      rule,
-      approvedHours: catApprovedHours,
-      pendingHours: catPendingHours,
-      isMinMet,
-      isMaxExceeded,
-    };
-  });
+  const stats = RulesEngine.calculateProgress(certificates, profile);
 
   return (
     <div className="space-y-5">
 
-      {/* Institutional Academic Header Box */}
+      {/* Institutional Student Header Box */}
       <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-md p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1">
           <div className="flex flex-wrap items-center gap-2">
@@ -91,9 +53,9 @@ export const DashboardView: React.FC<DashboardProps> = ({
             Painel do Estudante — {profile.name}
           </h2>
 
-          <div className="flex items-center gap-2 text-xs pt-1">
+          <div className="flex items-center gap-2 text-xs pt-0.5">
             <Sliders className="w-3.5 h-3.5 text-slate-500" />
-            <span className="font-semibold text-slate-700 dark:text-slate-300">Curso Ativo:</span>
+            <span className="font-semibold text-slate-700 dark:text-slate-300">Matriz Curricular:</span>
             <select
               value={UFSCAR_COURSES.find((c) => c.name === profile.course)?.id || 'bcc'}
               onChange={(e) => changeCourse(e.target.value)}
@@ -125,78 +87,107 @@ export const DashboardView: React.FC<DashboardProps> = ({
         </div>
       </div>
 
+      {/* Compliance Alerts Panel */}
+      {stats.alerts.length > 0 && (
+        <div className="space-y-2">
+          {stats.alerts.map((alert, idx) => {
+            const isSuccess = alert.type === 'success';
+            const isWarning = alert.type === 'warning';
+            const bg = isSuccess
+              ? 'bg-emerald-50 dark:bg-emerald-950/40 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
+              : isWarning
+              ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200'
+              : 'bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-800 dark:text-slate-200';
+
+            const Icon = isSuccess ? CheckCircle2 : isWarning ? AlertTriangle : AlertCircle;
+
+            return (
+              <div
+                key={idx}
+                className={`p-2.5 rounded-sm border text-xs font-medium flex items-center gap-2 ${bg}`}
+              >
+                <Icon className="w-4 h-4 shrink-0" />
+                <span>{alert.message}</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {/* Main KPI Data Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
 
         {/* Total Progress */}
         <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-md p-3.5 space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-            <span>Progresso Total</span>
-            <span className="font-mono text-slate-700 dark:text-slate-300">{progressPercent}%</span>
+            <span>Aproveitamento Efetivo</span>
+            <span className="font-mono text-slate-700 dark:text-slate-300">{stats.progressPercent}%</span>
           </div>
           <div className="flex items-baseline justify-between">
-            <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{approvedHours}h</span>
-            <span className="text-xs text-slate-500 dark:text-slate-400">Meta: {totalRequired}h</span>
+            <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">
+              {stats.effectiveApprovedHours}h
+            </span>
+            <span className="text-xs text-slate-500 dark:text-slate-400">Exigido: {stats.totalRequired}h</span>
           </div>
           <div
             className="w-full h-2 bg-slate-100 dark:bg-slate-800 rounded-xs overflow-hidden border border-slate-200 dark:border-slate-700"
             role="progressbar"
-            aria-valuenow={approvedHours}
+            aria-valuenow={stats.effectiveApprovedHours}
             aria-valuemin={0}
-            aria-valuemax={totalRequired}
+            aria-valuemax={stats.totalRequired}
           >
             <div
               className="h-full bg-[#8b0000] dark:bg-red-600 transition-all"
-              style={{ width: `${progressPercent}%` }}
+              style={{ width: `${stats.progressPercent}%` }}
             />
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            Faltam <strong className="text-slate-700 dark:text-slate-300">{remainingHours}h</strong> para a conclusão.
+            Faltam <strong className="text-slate-700 dark:text-slate-300">{stats.remainingTotalHours}h</strong> para a colação de grau.
           </p>
         </div>
 
-        {/* Approved Hours */}
+        {/* Total Homologated Hours */}
         <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-md p-3.5 space-y-1">
           <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-            Horas Homologadas
+            Horas Homologadas (Bruto)
           </div>
           <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
-            {approvedHours}h
+            {stats.approvedHours}h
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            {approvedCertificates.length} atividade(s) deferidas.
+            {certificates.filter((c) => c.status === 'approved').length} atividade(s) deferidas.
           </p>
         </div>
 
-        {/* Pending Review */}
+        {/* Pending Hours */}
         <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-md p-3.5 space-y-1">
           <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-            Em Avaliação
+            Em Análise Docente
           </div>
           <div className="text-2xl font-bold text-amber-700 dark:text-amber-400">
-            {pendingHours}h
+            {stats.pendingHours}h
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            {pendingCertificates.length} solicitação(ões) em análise.
+            {certificates.filter((c) => c.status === 'submitted').length} solicitação(ões) em análise.
           </p>
         </div>
 
-        {/* Drafts */}
+        {/* Drafts & Actionable */}
         <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-md p-3.5 space-y-1">
           <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
-            Rascunhos
+            Rascunhos / Pendentes
           </div>
           <div className="text-2xl font-bold text-slate-800 dark:text-slate-200">
-            {draftCertificates.length}
+            {certificates.filter((c) => c.status === 'draft' || c.status === 'needs_info').length}
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            Registrados no sistema local.
+            Prontos para edição ou submissão.
           </p>
         </div>
 
       </div>
 
-      {/* Category Breakdown Table */}
+      {/* Category Rules & Progress Breakdown */}
       <div className="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-800 rounded-md p-4 space-y-3">
         <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
           <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100 flex items-center gap-1.5 uppercase tracking-wide">
@@ -204,7 +195,7 @@ export const DashboardView: React.FC<DashboardProps> = ({
             Quadro de Cumprimento por Modalidade (Norma UFSCar)
           </h3>
           <span className="text-xs font-mono text-slate-500 dark:text-slate-400">
-            Regulamento {profile.course}
+            {profile.course}
           </span>
         </div>
 
@@ -213,38 +204,47 @@ export const DashboardView: React.FC<DashboardProps> = ({
             <thead className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold border-b border-slate-200 dark:border-slate-700">
               <tr>
                 <th className="py-2 px-3">Modalidade / Categoria</th>
-                <th className="py-2 px-3">Horas Computadas</th>
-                <th className="py-2 px-3">Limites (Min / Máx)</th>
+                <th className="py-2 px-3">Horas Aprovadas</th>
+                <th className="py-2 px-3">Aproveitamento Efetivo</th>
+                <th className="py-2 px-3">Limites (Piso / Teto)</th>
                 <th className="py-2 px-3">Progresso Modalidade</th>
-                <th className="py-2 px-3">Status de Conformidade</th>
+                <th className="py-2 px-3">Status da Categoria</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
-              {categoryStats.map(({ rule, approvedHours, pendingHours, isMinMet, isMaxExceeded }) => {
-                const catPercent = Math.min(100, Math.round((approvedHours / rule.maxHours) * 100));
+              {stats.categoryProgressList.map((cp) => {
+                const catPercent = Math.min(100, Math.round((cp.approvedHours / cp.rule.maxHours) * 100));
 
                 return (
-                  <tr key={rule.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
+                  <tr key={cp.rule.id} className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40">
                     <td className="py-2.5 px-3">
                       <div className="font-bold text-slate-900 dark:text-slate-100">
-                        {rule.name}
+                        {cp.rule.name}
                       </div>
                       <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                        {rule.description}
+                        {cp.rule.description}
                       </div>
                     </td>
                     <td className="py-2.5 px-3 font-semibold text-slate-900 dark:text-slate-100">
-                      {approvedHours}h
-                      {pendingHours > 0 && (
-                        <span className="text-amber-600 dark:text-amber-400 text-[10px] block">
-                          (+{pendingHours}h análise)
+                      {cp.approvedHours}h
+                      {cp.pendingHours > 0 && (
+                        <span className="text-amber-600 dark:text-amber-400 text-[10px] block font-mono">
+                          (+{cp.pendingHours}h em análise)
+                        </span>
+                      )}
+                    </td>
+                    <td className="py-2.5 px-3 font-mono font-bold text-[#8b0000] dark:text-red-400">
+                      {cp.effectiveApprovedHours}h
+                      {cp.hoursCapped > 0 && (
+                        <span className="text-slate-400 text-[10px] block font-normal">
+                          ({cp.hoursCapped}h acima do teto)
                         </span>
                       )}
                     </td>
                     <td className="py-2.5 px-3 text-slate-600 dark:text-slate-400 font-mono">
-                      Mín: {rule.minHours}h | Máx: {rule.maxHours}h
+                      Mín: {cp.rule.minHours}h | Máx: {cp.rule.maxHours}h
                     </td>
-                    <td className="py-2.5 px-3 min-w-[140px]">
+                    <td className="py-2.5 px-3 min-w-[130px]">
                       <div className="flex justify-between text-[10px] font-semibold text-slate-600 dark:text-slate-400 mb-1">
                         <span>{catPercent}%</span>
                       </div>
@@ -256,18 +256,13 @@ export const DashboardView: React.FC<DashboardProps> = ({
                       </div>
                     </td>
                     <td className="py-2.5 px-3">
-                      {isMinMet ? (
+                      {cp.minHoursMet ? (
                         <span className="inline-flex items-center gap-1 text-emerald-700 dark:text-emerald-400 font-semibold text-[11px]">
                           <CheckCircle2 className="w-3 h-3" /> Mínimo Atingido
                         </span>
                       ) : (
                         <span className="inline-flex items-center gap-1 text-amber-700 dark:text-amber-400 font-semibold text-[11px]">
-                          <AlertTriangle className="w-3 h-3" /> Faltam {rule.minHours - approvedHours}h
-                        </span>
-                      )}
-                      {isMaxExceeded && (
-                        <span className="text-purple-700 dark:text-purple-400 font-semibold text-[10px] block">
-                          Teto Máximo Atingido
+                          <AlertTriangle className="w-3 h-3" /> Faltam {cp.remainingForMin}h
                         </span>
                       )}
                     </td>
@@ -299,9 +294,9 @@ export const DashboardView: React.FC<DashboardProps> = ({
               <tr>
                 <th className="py-2 px-3">Descrição da Atividade</th>
                 <th className="py-2 px-3">Modalidade</th>
-                <th className="py-2 px-3">Horas</th>
+                <th className="py-2 px-3 text-right">Horas</th>
                 <th className="py-2 px-3">Código de Autenticação</th>
-                <th className="py-2 px-3">Status</th>
+                <th className="py-2 px-3 text-center">Status</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
@@ -318,13 +313,13 @@ export const DashboardView: React.FC<DashboardProps> = ({
                   <td className="py-2 px-3">
                     <CategoryBadge categoryId={cert.categoryId} />
                   </td>
-                  <td className="py-2 px-3 font-mono font-bold text-[#8b0000] dark:text-red-400">
+                  <td className="py-2 px-3 text-right font-mono font-bold text-[#8b0000] dark:text-red-400">
                     {cert.hoursRequested}h
                   </td>
                   <td className="py-2 px-3 font-mono text-[11px] text-slate-600 dark:text-slate-400">
                     {cert.verificationCode || 'UFSCAR-PENDENTE'}
                   </td>
-                  <td className="py-2 px-3">
+                  <td className="py-2 px-3 text-center">
                     <StatusBadge status={cert.status} />
                   </td>
                 </tr>
