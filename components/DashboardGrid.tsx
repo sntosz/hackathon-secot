@@ -1,11 +1,11 @@
-import Card from "./card";
+import MetricCard from "./MetricCard";
 
 export default function DashboardGrid(){
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <Card name="Horas Aproveitadas" subtitle="Resumo das atividades" hours={135} />
-            <Card name="Atividades Pendentes" subtitle="Aguardando validação" hours={20} />
-            <Card name="Relatórios" subtitle="Exportar ou imprimir" hours={12} />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <MetricCard title="Horas Aproveitadas" value={135} note="Concluídas" />
+            <MetricCard title="Horas em Análise" value={45} note="Aguardando validação" />
+            <MetricCard title="Horas Homologadas" value={87} note="Total homologado" />
         </div>
     )
 }
