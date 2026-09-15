@@ -1,37 +1,145 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
-  --bg: #0a0a0b;
-  --panel: #0e0f10;
-  --surface: #121315;
+  --bg: #0b0c0e;
+  --panel: #111215;
+  --surface: #16181d;
+  --surface-hover: #1e2128;
   --muted: #9aa0a6;
   --accent: #10b981;
-  --brand: #4f46e5;
+  --brand: #2563eb;
 }
 
-html, body, #__next { height: 100%; }
-body { background: var(--bg); color: #e6eef8; font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto; }
+html, body {
+  min-height: 100%;
+}
 
-.container-card { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02)); border: 1px solid rgba(255,255,255,0.03); }
+body {
+  background-color: var(--bg);
+  color: #e6eef8;
+  font-family: var(--font-geist-sans), Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
 
-.btn { @apply px-3 py-1 rounded text-sm font-medium; }
-.btn-sm { @apply px-2 py-0.5 text-xs rounded; }
-.btn-accent { background: var(--accent); color: #031011; }
-.btn-ghost { background: transparent; border: 1px solid rgba(255,255,255,0.04); }
+/* Accessibility: Font Sizing */
+html.font-size-normal {
+  font-size: 16px;
+}
+html.font-size-large {
+  font-size: 18px;
+}
+html.font-size-extralarge {
+  font-size: 20px;
+}
 
-.card-header { @apply flex items-center justify-between mb-3; }
-.card-title { @apply text-lg font-semibold; }
-.card-sub { color: var(--muted); font-size: .85rem; }
+/* Accessibility: Dyslexia Friendly Mode */
+html.dyslexia-font-mode * {
+  font-family: 'Lexend', 'OpenDyslexic', 'Comic Sans MS', sans-serif !important;
+  letter-spacing: 0.05em !important;
+  word-spacing: 0.08em !important;
+  line-height: 1.65 !important;
+}
 
-/* table polish */
-table thead th { color: rgba(255,255,255,0.7); font-weight: 600; }
-table tbody td { color: rgba(255,255,255,0.85); }
+/* Accessibility: High Contrast Mode (WCAG AAA compliant) */
+html.high-contrast-mode {
+  --bg: #000000 !important;
+  --panel: #050505 !important;
+  --surface: #0a0a0a !important;
+  --surface-hover: #1f1f1f !important;
+  --muted: #ffffff !important;
+  --accent: #00ff88 !important;
+  --brand: #60a5fa !important;
+}
 
-/* small utility */
-.kpi { @apply text-2xl font-bold; }
+html.high-contrast-mode body {
+  background-color: #000000 !important;
+  color: #ffffff !important;
+}
 
-/* scrollbar */
-::-webkit-scrollbar { height: 10px; width: 10px }
-::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.04); border-radius: 999px }
+html.high-contrast-mode .container-card,
+html.high-contrast-mode [class*="border-zinc-"],
+html.high-contrast-mode [class*="border-gray-"] {
+  border-color: #ffffff !important;
+  border-width: 2px !important;
+}
+
+html.high-contrast-mode button,
+html.high-contrast-mode a,
+html.high-contrast-mode input,
+html.high-contrast-mode select {
+  outline: 2px solid transparent;
+}
+
+html.high-contrast-mode button:focus-visible,
+html.high-contrast-mode a:focus-visible,
+html.high-contrast-mode input:focus-visible,
+html.high-contrast-mode select:focus-visible {
+  outline: 3px solid #ffff00 !important;
+  outline-offset: 2px !important;
+}
+
+/* Accessibility: Focus / Neurodivergent Assist Mode */
+html.focus-assist-mode * {
+  animation: none !important;
+  transition: none !important;
+}
+
+html.focus-assist-mode body {
+  background-image: none !important;
+}
+
+/* Custom cards and utilities */
+.container-card {
+  background-color: #111215;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.card-hover:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Focus visible styling */
+:focus-visible {
+  outline: 2px solid #10b981;
+  outline-offset: 2px;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0c0e;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Print Stylesheet for Report Printing */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  header, nav, .no-print, button:not(.print-allow) {
+    display: none !important;
+  }
+
+  .print-area {
+    display: block !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+    padding: 20px !important;
+  }
+}
