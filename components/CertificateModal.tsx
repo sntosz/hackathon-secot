@@ -5,9 +5,9 @@ import { useHours } from '../context/HoursContext';
 import { X, ShieldCheck, Download, Calendar, Clock, Building, Hash, AlertTriangle, FileText, CheckCircle2 } from 'lucide-react';
 
 export default function CertificateModal() {
-  const { selectedCertificateForModal, setSelectedCertificateForModal, addToast } = useHours();
+  const { selectedCertificateForModal, setSelectedCertificateForModal, addToast, activeRole } = useHours();
 
-  if (!selectedCertificateForModal) return null;
+  if (!selectedCertificateForModal || activeRole !== 'student') return null;
 
   const cert = selectedCertificateForModal;
 

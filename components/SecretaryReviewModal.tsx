@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export default function SecretaryReviewModal() {
-  const { reviewingCertificate, setReviewingCertificate, deferCertificate, rejectCertificate, categoryRules, addToast } = useHours();
+  const { reviewingCertificate, setReviewingCertificate, deferCertificate, rejectCertificate, categoryRules, addToast, activeRole } = useHours();
 
   const [feedback, setFeedback] = useState('');
   const [copiedHash, setCopiedHash] = useState(false);
@@ -31,7 +31,7 @@ export default function SecretaryReviewModal() {
     }
   }, [reviewingCertificate]);
 
-  if (!reviewingCertificate) return null;
+  if (!reviewingCertificate || activeRole !== 'secretary') return null;
 
   const cert = reviewingCertificate;
   const categoryRule = categoryRules.find(r => r.category === cert.category);

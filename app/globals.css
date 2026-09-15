@@ -1,13 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --bg: #0b0c0e;
-  --panel: #111215;
-  --surface: #16181d;
-  --surface-hover: #1e2128;
-  --muted: #9aa0a6;
-  --accent: #10b981;
-  --brand: #2563eb;
+  --bg: #0a0b0d;
+  --bg-elevated: #111317;
+  --bg-panel: #14181d;
+  --bg-subtle: #171c22;
+  --bg-muted: #1c232b;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --text: #f4f7fb;
+  --muted: #9aa5b1;
+  --muted-strong: #dfe6ee;
+  --primary: #7ca6ff;
+  --success: #35c68d;
+  --warning: #f0b84a;
+  --danger: #f26b6b;
+  --shadow-soft: 0 1px 0 rgba(255,255,255,0.02), 0 8px 18px rgba(0,0,0,0.18);
 }
 
 html, body {
@@ -15,13 +23,35 @@ html, body {
 }
 
 body {
-  background-color: var(--bg);
-  color: #e6eef8;
-  font-family: var(--font-geist-sans), Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background:
+    radial-gradient(circle at top, rgba(124, 166, 255, 0.08), transparent 28%),
+    var(--bg);
+  color: var(--text);
+  font-family: var(--font-geist-sans), Inter, "Segoe UI", sans-serif;
+  letter-spacing: -0.01em;
   transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Accessibility: Font Sizing */
+* {
+  box-sizing: border-box;
+}
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.15s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  letter-spacing: -0.03em;
+}
+
+::selection {
+  background: rgba(124, 166, 255, 0.26);
+}
+
 html.font-size-normal {
   font-size: 16px;
 }
@@ -32,7 +62,6 @@ html.font-size-extralarge {
   font-size: 20px;
 }
 
-/* Accessibility: Dyslexia Friendly Mode */
 html.dyslexia-font-mode * {
   font-family: 'Lexend', 'OpenDyslexic', 'Comic Sans MS', sans-serif !important;
   letter-spacing: 0.05em !important;
@@ -40,26 +69,28 @@ html.dyslexia-font-mode * {
   line-height: 1.65 !important;
 }
 
-/* Accessibility: High Contrast Mode (WCAG AAA compliant) */
 html.high-contrast-mode {
   --bg: #000000 !important;
-  --panel: #050505 !important;
-  --surface: #0a0a0a !important;
-  --surface-hover: #1f1f1f !important;
+  --bg-elevated: #050505 !important;
+  --bg-panel: #0a0a0a !important;
+  --bg-subtle: #111111 !important;
+  --bg-muted: #1a1a1a !important;
+  --border: rgba(255, 255, 255, 0.2) !important;
   --muted: #ffffff !important;
-  --accent: #00ff88 !important;
-  --brand: #60a5fa !important;
+  --text: #ffffff !important;
+  --primary: #60a5fa !important;
+  --success: #00ff88 !important;
 }
 
 html.high-contrast-mode body {
-  background-color: #000000 !important;
-  color: #ffffff !important;
+  background: #000 !important;
+  color: #fff !important;
 }
 
 html.high-contrast-mode .container-card,
 html.high-contrast-mode [class*="border-zinc-"],
 html.high-contrast-mode [class*="border-gray-"] {
-  border-color: #ffffff !important;
+  border-color: #fff !important;
   border-width: 2px !important;
 }
 
@@ -78,7 +109,6 @@ html.high-contrast-mode select:focus-visible {
   outline-offset: 2px !important;
 }
 
-/* Accessibility: Focus / Neurodivergent Assist Mode */
 html.focus-assist-mode * {
   animation: none !important;
   transition: none !important;
@@ -88,42 +118,39 @@ html.focus-assist-mode body {
   background-image: none !important;
 }
 
-/* Custom cards and utilities */
 .container-card {
-  background-color: #111215;
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(17, 19, 23, 0.96);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-soft);
 }
 
 .card-hover:hover {
-  border-color: rgba(255, 255, 255, 0.15);
+  border-color: var(--border-strong);
 }
 
-/* Focus visible styling */
 :focus-visible {
-  outline: 2px solid #10b981;
+  outline: 2px solid rgba(124, 166, 255, 0.95);
   outline-offset: 2px;
 }
 
-/* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #0b0c0e;
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: #272b31;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+  background: #3b424b;
 }
 
-/* Print Stylesheet for Report Printing */
 @media print {
   body {
     background: #ffffff !important;

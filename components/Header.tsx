@@ -81,34 +81,31 @@ export default function Header() {
 
   return (
     <div className="sticky top-0 z-40 w-full flex flex-col transition-colors">
-      <header className="w-full bg-[#0d0e12] border-b border-zinc-800/80 px-4 lg:px-8 py-3">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-          
-          {/* Brand & Identity */}
+      <header className="w-full border-b border-zinc-800/80 bg-[#0d0f13]/90 px-4 py-3 backdrop-blur-sm lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <Link 
               href="/painel-geral" 
-              className="flex items-center gap-3 focus-visible:ring-2 focus-visible:ring-emerald-400 rounded-lg p-1"
+              className="flex items-center gap-3 rounded-md p-1 focus-visible:ring-2 focus-visible:ring-blue-400"
               aria-label="Página Inicial UFSCar Horas"
             >
-              <div className="bg-[#1d4ed8] text-white px-2.5 py-1 rounded text-xs font-bold tracking-wider shadow-sm uppercase">
+              <div className="rounded-md bg-[#1f5ae0] px-2.5 py-1 text-[10px] font-bold tracking-[0.14em] text-white uppercase">
                 UFSCar
               </div>
               <div className="flex flex-col">
-                <span className="text-white font-semibold text-sm tracking-tight flex items-center gap-1.5">
+                <span className="text-sm font-semibold tracking-[-0.02em] text-white">
                   UFSCar Horas
                 </span>
-                <span className="text-xs text-zinc-400 font-normal">
+                <span className="text-[11px] text-zinc-400">
                   Ciência da Computação
                 </span>
               </div>
             </Link>
           </div>
 
-          {/* Navigation Tabs matching Figma */}
           <nav 
             aria-label="Navegação principal" 
-            className="hidden md:flex items-center gap-1 bg-[#13151b] p-1 rounded-xl border border-zinc-800/60"
+            className="hidden items-center gap-1 rounded-md border border-zinc-800 bg-[#12171d] p-1 md:flex"
           >
             {navLinks.map((link) => {
               const isActive = pathname === link.href || (link.href === '/portal-secretaria' && pathname === '/painel-validacao-docente');
@@ -116,10 +113,10 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`px-4 py-1.5 text-xs font-medium rounded-lg transition-all ${
+                  className={`rounded-md px-3 py-1.5 text-[11px] font-medium transition-colors ${
                     isActive
-                      ? "bg-[#1f222d] text-white shadow-sm border border-zinc-700/60 font-semibold"
-                      : "text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40"
+                      ? "border border-zinc-700 bg-zinc-800 text-white"
+                      : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
                   }`}
                 >
                   {link.label}
@@ -128,11 +125,8 @@ export default function Header() {
             })}
           </nav>
 
-          {/* Accessibility & Prominent Role Controls */}
           <div className="flex items-center gap-2.5">
-            
-            {/* Quick Accessibility Bar */}
-            <div className="flex items-center bg-[#13151b] border border-zinc-800/70 rounded-lg p-0.5 gap-1">
+            <div className="flex items-center gap-1 rounded-md border border-zinc-800 bg-[#12171d] p-0.5">
               {/* High Contrast */}
               <button
                 onClick={() => {
