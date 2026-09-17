@@ -13,11 +13,8 @@ import {
   HelpCircle, 
   Type, 
   RotateCcw,
-  CheckCircle2,
-  ShieldAlert,
   GraduationCap,
-  Building2,
-  Layers
+  Building2
 } from "lucide-react";
 
 export default function Header() {
@@ -86,19 +83,20 @@ export default function Header() {
 
   return (
     <div className="sticky top-0 z-40 w-full flex flex-col transition-colors">
-      <header className="w-full border-b border-zinc-800/80 bg-[#0d0f13]/90 px-3 py-2.5 sm:px-4 sm:py-3 backdrop-blur-sm lg:px-8">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 sm:gap-4">
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+      <header className="w-full border-b border-zinc-800/80 bg-[#0d0f13]/95 px-3 py-2.5 sm:px-4 sm:py-3 backdrop-blur-sm lg:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap sm:flex-nowrap items-center justify-between gap-2.5">
+          {/* Logo & Role Badge */}
+          <div className="flex items-center gap-2 shrink-0">
             <Link 
               href="/painel-geral" 
-              className="flex items-center gap-2 sm:gap-3 rounded-md p-1 focus-visible:ring-2 focus-visible:ring-blue-400"
+              className="flex items-center gap-2 rounded-md p-0.5 focus-visible:ring-2 focus-visible:ring-blue-400"
               aria-label="Página Inicial UFSCar Horas"
             >
               <div className="rounded-md bg-[#1f5ae0] px-2 py-1 text-[10px] font-bold tracking-[0.14em] text-white uppercase">
                 UFSCar
               </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="flex items-center gap-1.5">
                   <span className="text-xs sm:text-sm font-semibold tracking-[-0.02em] text-white">
                     UFSCar Horas
                   </span>
@@ -108,13 +106,11 @@ export default function Header() {
                     {activeRole === 'student' ? 'Visão Aluno' : 'SGA Secretaria'}
                   </span>
                 </div>
-                <span className="text-[10px] sm:text-[11px] text-zinc-400 hidden sm:inline">
-                  Ciência da Computação
-                </span>
               </div>
             </Link>
           </div>
 
+          {/* Center Navigation Links (Desktop) */}
           <nav 
             aria-label="Navegação principal" 
             className="hidden items-center gap-1 rounded-md border border-zinc-800 bg-[#12171d] p-1 md:flex"
@@ -137,10 +133,47 @@ export default function Header() {
             })}
           </nav>
 
-          <div className="flex items-center gap-2.5">
-            <div className="flex items-center gap-1 rounded-md border border-zinc-800 bg-[#12171d] p-0.5">
+          {/* Right Controls: Role Selector + Accessibility Controls */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Prominent Role Selector Toggle */}
+            <div className="bg-[#13151b] border border-zinc-800/90 rounded-xl p-0.5 flex items-center shadow-xs">
+              <button
+                type="button"
+                onClick={() => handleRoleChange('student')}
+                className={`flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                  activeRole === 'student'
+                    ? 'bg-emerald-500 text-zinc-950 shadow-sm'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+                title="Alternar para visão do Estudante"
+              >
+                <GraduationCap className="w-3.5 h-3.5" />
+                <span>Aluno</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleRoleChange('secretary')}
+                className={`flex items-center gap-1 px-2 py-1 sm:px-2.5 sm:py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer relative ${
+                  activeRole === 'secretary'
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-zinc-400 hover:text-zinc-200'
+                }`}
+                title="Alternar para visão da Secretaria / Docente"
+              >
+                <Building2 className="w-3.5 h-3.5" />
+                <span>Secretaria</span>
+                {pendingTotal > 0 && (
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                )}
+              </button>
+            </div>
+
+            {/* Accessibility Toolbar */}
+            <div className="flex items-center gap-0.5 sm:gap-1 rounded-md border border-zinc-800 bg-[#12171d] p-0.5">
               {/* High Contrast */}
               <button
+                type="button"
                 onClick={() => {
                   updateAccessibility({ highContrast: !accessibility.highContrast });
                   addToast(accessibility.highContrast ? "Alto contraste desativado" : "Alto contraste ativado (WCAG AAA)", "info");
@@ -151,11 +184,12 @@ export default function Header() {
                   accessibility.highContrast ? "bg-amber-400 text-black font-bold" : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
                 }`}
               >
-                {accessibility.highContrast ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                {accessibility.highContrast ? <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Moon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
               </button>
 
               {/* Font Sizing */}
               <button
+                type="button"
                 onClick={cycleFontSize}
                 title={`Aumentar/Diminuir Texto (Atual: ${accessibility.fontSize})`}
                 aria-label="Ajustar Tamanho do Texto"
@@ -163,11 +197,12 @@ export default function Header() {
                   accessibility.fontSize !== 'normal' ? "bg-blue-600 text-white font-bold" : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
                 }`}
               >
-                <Type className="w-4 h-4" />
+                <Type className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
 
               {/* Audio narration */}
               <button
+                type="button"
                 onClick={handleAudioToggle}
                 title="Audiodescrição / Leitor de Voz"
                 aria-label="Ativar Leitura por Voz"
@@ -175,11 +210,12 @@ export default function Header() {
                   accessibility.audioFeedback ? "bg-emerald-500 text-black font-bold" : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
                 }`}
               >
-                {accessibility.audioFeedback ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
+                {accessibility.audioFeedback ? <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
               </button>
 
               {/* Focus / Neurodivergent Mode */}
               <button
+                type="button"
                 onClick={() => {
                   updateAccessibility({ focusMode: !accessibility.focusMode });
                   addToast(accessibility.focusMode ? "Modo Foco desativado" : "Modo Foco / Neurodivergente ativado", "info");
@@ -190,54 +226,21 @@ export default function Header() {
                   accessibility.focusMode ? "bg-emerald-600 text-white font-bold" : "text-zinc-400 hover:text-white hover:bg-zinc-800/60"
                 }`}
               >
-                <Eye className="w-4 h-4" />
+                <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
 
               {/* Shortcuts help */}
               <button
+                type="button"
                 onClick={() => setIsShortcutsOpen(true)}
                 title="Guia de Atalhos do Teclado (?)"
                 aria-label="Guia de Atalhos do Teclado"
                 className="p-1.5 rounded text-zinc-400 hover:text-white hover:bg-zinc-800/60 text-xs transition-colors cursor-pointer"
               >
-                <HelpCircle className="w-4 h-4" />
+                <HelpCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </div>
-
-            {/* Prominent Role Selector Toggle */}
-            <div className="bg-[#13151b] border border-zinc-800/90 rounded-xl p-0.5 flex items-center shadow-xs">
-              <button
-                onClick={() => handleRoleChange('student')}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                  activeRole === 'student'
-                    ? 'bg-emerald-500 text-zinc-950 shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-                title="Alternar para visão do Estudante"
-              >
-                <GraduationCap className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Aluno</span>
-              </button>
-
-              <button
-                onClick={() => handleRoleChange('secretary')}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer relative ${
-                  activeRole === 'secretary'
-                    ? 'bg-blue-600 text-white shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-200'
-                }`}
-                title="Alternar para visão da Secretaria / Docente"
-              >
-                <Building2 className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">Secretaria</span>
-                {pendingTotal > 0 && (
-                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
-                )}
-              </button>
-            </div>
-
           </div>
-
         </div>
       </header>
 
@@ -266,34 +269,35 @@ export default function Header() {
 
       {/* Role Context Notification Bar */}
       {activeRole === 'secretary' && (
-        <div className="w-full bg-blue-950/70 border-b border-blue-800/50 px-4 py-2 text-xs flex flex-wrap items-center justify-between gap-3 text-blue-200 backdrop-blur-md">
+        <div className="w-full bg-blue-950/70 border-b border-blue-800/50 px-3 py-1.5 sm:px-4 sm:py-2 text-xs flex flex-wrap items-center justify-between gap-2.5 text-blue-200 backdrop-blur-md">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-blue-400"></span>
-            <span>
-              <strong>Modo Administrativo (Secretaria SGA_UFSCar):</strong> Você pode inspecionar documentos, analisar conformidade com o PPC e homologar ou indeferir certificados.
+            <span className="w-2 h-2 rounded-full bg-blue-400 shrink-0"></span>
+            <span className="text-[11px] sm:text-xs">
+              <strong>Modo Administrativo (Secretaria SGA_UFSCar):</strong> Análise e homologação de certificados.
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <Link 
               href="/portal-secretaria" 
-              className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-2.5 py-1 rounded text-[11px] transition-colors"
+              className="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[11px] transition-colors"
             >
-              Fila de Triagem ({pendingTotal})
+              Triagem ({pendingTotal})
             </Link>
             <Link 
               href="/painel-validacao-docente" 
-              className="bg-blue-900/80 hover:bg-blue-800 border border-blue-600/60 text-white font-medium px-2.5 py-1 rounded text-[11px] transition-colors"
+              className="bg-blue-900/80 hover:bg-blue-800 border border-blue-600/60 text-white font-medium px-2 py-0.5 sm:px-2.5 sm:py-1 rounded text-[11px] transition-colors"
             >
-              Homologação Docente
+              Homologação
             </Link>
             <button
+              type="button"
               onClick={resetDemoData}
               title="Restaurar dados originais de teste"
-              className="text-blue-300 hover:text-white flex items-center gap-1 text-[11px] hover:underline cursor-pointer ml-2"
+              className="text-blue-300 hover:text-white flex items-center gap-1 text-[11px] hover:underline cursor-pointer ml-1"
             >
               <RotateCcw className="w-3 h-3" />
-              Restaurar Demo
+              Reset
             </button>
           </div>
         </div>
