@@ -86,29 +86,29 @@ export default function Header() {
 
   return (
     <div className="sticky top-0 z-40 w-full flex flex-col transition-colors">
-      <header className="w-full border-b border-zinc-800/80 bg-[#0d0f13]/90 px-4 py-3 backdrop-blur-sm lg:px-8">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+      <header className="w-full border-b border-zinc-800/80 bg-[#0d0f13]/90 px-3 py-2.5 sm:px-4 sm:py-3 backdrop-blur-sm lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             <Link 
               href="/painel-geral" 
-              className="flex items-center gap-3 rounded-md p-1 focus-visible:ring-2 focus-visible:ring-blue-400"
+              className="flex items-center gap-2 sm:gap-3 rounded-md p-1 focus-visible:ring-2 focus-visible:ring-blue-400"
               aria-label="Página Inicial UFSCar Horas"
             >
-              <div className="rounded-md bg-[#1f5ae0] px-2.5 py-1 text-[10px] font-bold tracking-[0.14em] text-white uppercase">
+              <div className="rounded-md bg-[#1f5ae0] px-2 py-1 text-[10px] font-bold tracking-[0.14em] text-white uppercase">
                 UFSCar
               </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-2">
-                  <span className="text-sm font-semibold tracking-[-0.02em] text-white">
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  <span className="text-xs sm:text-sm font-semibold tracking-[-0.02em] text-white">
                     UFSCar Horas
                   </span>
-                  <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded ${
+                  <span className={`text-[9px] sm:text-[10px] font-bold px-1.5 py-0.2 rounded ${
                     activeRole === 'student' ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/30' : 'bg-blue-950/80 text-blue-300 border border-blue-500/40'
                   }`}>
                     {activeRole === 'student' ? 'Visão Aluno' : 'SGA Secretaria'}
                   </span>
                 </div>
-                <span className="text-[11px] text-zinc-400">
+                <span className="text-[10px] sm:text-[11px] text-zinc-400 hidden sm:inline">
                   Ciência da Computação
                 </span>
               </div>
@@ -240,6 +240,29 @@ export default function Header() {
 
         </div>
       </header>
+
+      {/* Mobile Navigation Row */}
+      <nav
+        aria-label="Navegação móvel"
+        className="flex md:hidden items-center gap-1 border-b border-zinc-800/80 bg-[#0d0f13] px-3 py-1.5 overflow-x-auto"
+      >
+        {navLinks.map((link) => {
+          const isActive = pathname === link.href || (link.href === '/portal-secretaria' && pathname === '/painel-validacao-docente');
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={`shrink-0 rounded-md px-2.5 py-1 text-[11px] font-medium transition-colors ${
+                isActive
+                  ? "border border-zinc-700 bg-zinc-800 text-white"
+                  : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
+              }`}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
+      </nav>
 
       {/* Role Context Notification Bar */}
       {activeRole === 'secretary' && (
