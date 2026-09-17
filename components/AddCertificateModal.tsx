@@ -1,12 +1,18 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHours } from '../context/HoursContext';
 import { ActivityCategory } from '../lib/types';
 import { X, Upload, AlertCircle, CheckCircle, FileText } from 'lucide-react';
 
 export default function AddCertificateModal() {
-  const { isAddModalOpen, setIsAddModalOpen, addCertificate, categoryRules, addToast } = useHours();
+  const { isAddModalOpen, setIsAddModalOpen, addCertificate, categoryRules, addToast, accessibility, speakText } = useHours();
+
+  useEffect(() => {
+    if (isAddModalOpen && accessibility.audioFeedback) {
+      speakText("Modal de submissão de novo certificado aberto. Preencha os dados da atividade.");
+    }
+  }, [isAddModalOpen, accessibility.audioFeedback, speakText]);
 
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState<ActivityCategory>('Ensino');

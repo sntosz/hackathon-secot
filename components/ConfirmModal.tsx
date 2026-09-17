@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect } from 'react';
+import { useHours } from '../context/HoursContext';
 
 export default function ConfirmModal({ open, title, description, onConfirm, onCancel }: {
   open: boolean;
@@ -9,8 +10,13 @@ export default function ConfirmModal({ open, title, description, onConfirm, onCa
   onConfirm: () => void;
   onCancel: () => void;
 }) {
+  const { accessibility, speakText } = useHours();
+
   useEffect(() => {
     if (!open) return;
+    if (accessibility.audioFeedback) {
+      speakText(`Confirmação solicitada: ${title}. ${description || ''}`);
+    }
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onCancel();
@@ -18,7 +24,7 @@ export default function ConfirmModal({ open, title, description, onConfirm, onCa
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [open, onCancel]);
+  }, [open, title, description, onCancel, accessibility.audioFeedback, speakText]);
 
   if (!open) return null;
 

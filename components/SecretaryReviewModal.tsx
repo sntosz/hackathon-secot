@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 export default function SecretaryReviewModal() {
-  const { reviewingCertificate, setReviewingCertificate, deferCertificate, rejectCertificate, categoryRules, addToast, activeRole } = useHours();
+  const { reviewingCertificate, setReviewingCertificate, deferCertificate, rejectCertificate, categoryRules, addToast, activeRole, accessibility, speakText } = useHours();
 
   const [feedback, setFeedback] = useState('');
   const [copiedHash, setCopiedHash] = useState(false);
@@ -28,8 +28,11 @@ export default function SecretaryReviewModal() {
   useEffect(() => {
     if (reviewingCertificate) {
       setFeedback(reviewingCertificate.feedback || '');
+      if (accessibility.audioFeedback) {
+        speakText(`Revisão de certificado para ${reviewingCertificate.studentName}. Atividade: ${reviewingCertificate.title}. Carga solicitada: ${reviewingCertificate.hours} horas.`);
+      }
     }
-  }, [reviewingCertificate]);
+  }, [reviewingCertificate, accessibility.audioFeedback, speakText]);
 
   if (!reviewingCertificate || activeRole !== 'secretary') return null;
 

@@ -1,11 +1,17 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHours } from '../context/HoursContext';
 import { X, ShieldCheck, Download, Calendar, Clock, Building, Hash, AlertTriangle, FileText, CheckCircle2 } from 'lucide-react';
 
 export default function CertificateModal() {
-  const { selectedCertificateForModal, setSelectedCertificateForModal, addToast, activeRole } = useHours();
+  const { selectedCertificateForModal, setSelectedCertificateForModal, addToast, activeRole, accessibility, speakText } = useHours();
+
+  useEffect(() => {
+    if (selectedCertificateForModal && activeRole === 'student' && accessibility.audioFeedback) {
+      speakText(`Detalhes do certificado: ${selectedCertificateForModal.title}. Status: ${selectedCertificateForModal.status}. Carga horária: ${selectedCertificateForModal.hours} horas.`);
+    }
+  }, [selectedCertificateForModal, activeRole, accessibility.audioFeedback, speakText]);
 
   if (!selectedCertificateForModal || activeRole !== 'student') return null;
 

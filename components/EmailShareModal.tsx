@@ -1,11 +1,17 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHours } from '../context/HoursContext';
 import { X, Mail, Send, CheckCircle2, Paperclip, ShieldCheck } from 'lucide-react';
 
 export default function EmailShareModal() {
-  const { isEmailModalOpen, setIsEmailModalOpen, student, certificates, addToast } = useHours();
+  const { isEmailModalOpen, setIsEmailModalOpen, student, certificates, addToast, accessibility, speakText } = useHours();
+
+  useEffect(() => {
+    if (isEmailModalOpen && accessibility.audioFeedback) {
+      speakText("Modal de envio de relatório de horas por e-mail aberto.");
+    }
+  }, [isEmailModalOpen, accessibility.audioFeedback, speakText]);
 
   const [toEmail, setToEmail] = useState('coordenacao.computacao@ufscar.br');
   const [subject, setSubject] = useState(`[Horas Complementares] Espelho de Atividades - ${student.name} (RA: ${student.ra})`);

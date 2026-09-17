@@ -1,11 +1,17 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHours } from '../context/HoursContext';
 import { X, Keyboard, Eye, Sun, Volume2, Type, CheckCircle } from 'lucide-react';
 
 export default function ShortcutsModal() {
-  const { isShortcutsOpen, setIsShortcutsOpen } = useHours();
+  const { isShortcutsOpen, setIsShortcutsOpen, accessibility, speakText } = useHours();
+
+  useEffect(() => {
+    if (isShortcutsOpen && accessibility.audioFeedback) {
+      speakText("Guia de acessibilidade e atalhos do teclado aberto.");
+    }
+  }, [isShortcutsOpen, accessibility.audioFeedback, speakText]);
 
   if (!isShortcutsOpen) return null;
 
