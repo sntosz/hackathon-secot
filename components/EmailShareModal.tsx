@@ -36,7 +36,7 @@ export default function EmailShareModal() {
       <div className="bg-[#12141a] border border-zinc-700/80 rounded-2xl w-full max-w-xl p-6 shadow-2xl relative">
         <button
           onClick={() => setIsEmailModalOpen(false)}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
           aria-label="Fechar envio por e-mail"
         >
           <X className="w-5 h-5" />
@@ -112,14 +112,14 @@ export default function EmailShareModal() {
             <button
               type="button"
               onClick={() => setIsEmailModalOpen(false)}
-              className="px-4 py-2 font-medium text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors"
+              className="px-4 py-2 font-medium text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
               disabled={sending}
-              className="px-5 py-2 font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md transition-all flex items-center gap-1.5 disabled:opacity-50"
+              className="px-5 py-2 font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-md transition-all flex items-center gap-1.5 disabled:opacity-50 cursor-pointer"
             >
               <Send className="w-3.5 h-3.5" />
               {sending ? 'Enviando...' : 'Enviar Relatório por E-mail'}

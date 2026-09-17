@@ -42,10 +42,10 @@ export default function ToastContainer() {
             </div>
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-zinc-400 hover:text-white p-0.5 rounded transition-colors"
+              className="text-zinc-400 hover:text-white p-0.5 rounded transition-colors cursor-pointer"
               aria-label="Fechar notificação"
             >
-              <X className="w-3.5 h-3.5 cursor-pointer" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         );

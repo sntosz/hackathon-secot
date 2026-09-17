@@ -251,14 +251,13 @@ export const HoursProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const deferCertificate = (id: string, feedback?: string) => {
     saveHistory(`Homologação de certificado`);
-    let certStudent = "";
-    let certHours = 0;
+    const targetCert = certificates.find(c => c.id === id);
+    const certStudent = targetCert ? targetCert.studentName : "Estudante";
+    const certHours = targetCert ? targetCert.hours : 0;
 
     setCertificates(prev =>
       prev.map(c => {
         if (c.id === id) {
-          certStudent = c.studentName;
-          certHours = c.hours;
           return {
             ...c,
             status: 'APROVADO',
@@ -278,11 +277,12 @@ export const HoursProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const rejectCertificate = (id: string, feedback: string) => {
     saveHistory(`Indeferimento de certificado`);
-    let certStudent = "";
+    const targetCert = certificates.find(c => c.id === id);
+    const certStudent = targetCert ? targetCert.studentName : "Estudante";
+
     setCertificates(prev =>
       prev.map(c => {
         if (c.id === id) {
-          certStudent = c.studentName;
           return {
             ...c,
             status: 'INDEFERIDO',

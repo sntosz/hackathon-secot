@@ -19,7 +19,7 @@ export default function ShortcutsModal() {
       <div className="bg-[#12141a] border border-zinc-700/80 rounded-2xl w-full max-w-xl p-6 shadow-2xl relative">
         <button
           onClick={() => setIsShortcutsOpen(false)}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
           aria-label="Fechar guia de acessibilidade"
         >
           <X className="w-5 h-5" />
@@ -102,7 +102,7 @@ export default function ShortcutsModal() {
         <div className="mt-5 pt-3 border-t border-zinc-800 flex justify-end">
           <button
             onClick={() => setIsShortcutsOpen(false)}
-            className="px-4 py-2 text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-zinc-950 rounded-lg transition-colors"
+            className="px-4 py-2 text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-zinc-950 rounded-lg transition-colors cursor-pointer"
           >
             Entendido
           </button>

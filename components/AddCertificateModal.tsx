@@ -72,7 +72,7 @@ export default function AddCertificateModal() {
       <div className="bg-[#111318] border border-zinc-700/80 rounded-2xl w-full max-w-xl p-6 shadow-2xl relative">
         <button
           onClick={() => setIsAddModalOpen(false)}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
           aria-label="Fechar modal"
         >
           <X className="w-5 h-5" />
@@ -241,13 +241,13 @@ export default function AddCertificateModal() {
             <button
               type="button"
               onClick={() => setIsAddModalOpen(false)}
-              className="px-4 py-2 text-xs font-medium text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors"
+              className="px-4 py-2 text-xs font-medium text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="px-5 py-2 text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-zinc-950 rounded-lg shadow-md transition-all flex items-center gap-1.5"
+              className="px-5 py-2 text-xs font-semibold bg-emerald-500 hover:bg-emerald-600 text-zinc-950 rounded-lg shadow-md transition-all flex items-center gap-1.5 cursor-pointer"
             >
               <CheckCircle className="w-4 h-4" />
               Enviar para Homologação

@@ -38,7 +38,7 @@ export default function CertificateModal() {
       <div className="bg-[#12141a] border border-zinc-700/80 rounded-2xl w-full max-w-2xl p-6 shadow-2xl relative">
         <button
           onClick={() => setSelectedCertificateForModal(null)}
-          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+          className="absolute top-5 right-5 text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
           aria-label="Fechar detalhes"
         >
           <X className="w-5 h-5" />
@@ -100,7 +100,7 @@ export default function CertificateModal() {
             </div>
             <button
               onClick={handleDownload}
-              className="text-xs text-zinc-300 hover:text-white flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 transition-colors"
+              className="text-xs text-zinc-300 hover:text-white flex items-center gap-1 px-2.5 py-1 rounded bg-zinc-800 hover:bg-zinc-700 transition-colors cursor-pointer"
             >
               <Download className="w-3.5 h-3.5" />
               Baixar Cópia
@@ -143,7 +143,7 @@ export default function CertificateModal() {
           </span>
           <button
             onClick={() => setSelectedCertificateForModal(null)}
-            className="px-4 py-2 text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-colors"
+            className="px-4 py-2 text-xs font-semibold bg-zinc-800 hover:bg-zinc-700 text-white rounded-lg transition-colors cursor-pointer"
           >
             Fechar
           </button>

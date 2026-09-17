@@ -36,12 +36,17 @@ export default function Header() {
     addToast
   } = useHours();
 
-  const navLinks = [
-    { label: "Painel Geral", href: "/painel-geral" },
-    { label: "Meus Certificados", href: "/meus-certificados" },
-    { label: "Gerar Relatório", href: "/gerar-relatorio" },
-    { label: "Portal Secretaria", href: "/portal-secretaria" },
-  ];
+  const navLinks = activeRole === 'student'
+    ? [
+        { label: "Painel Geral", href: "/painel-geral" },
+        { label: "Meus Certificados", href: "/meus-certificados" },
+        { label: "Gerar Relatório", href: "/gerar-relatorio" },
+      ]
+    : [
+        { label: "Portal Secretaria (Triagem)", href: "/portal-secretaria" },
+        { label: "Homologação Docente", href: "/painel-validacao-docente" },
+        { label: "Visão Aluno", href: "/painel-geral" },
+      ];
 
   const handleRoleChange = (newRole: 'student' | 'secretary') => {
     setActiveRole(newRole);
@@ -93,9 +98,16 @@ export default function Header() {
                 UFSCar
               </div>
               <div className="flex flex-col">
-                <span className="text-sm font-semibold tracking-[-0.02em] text-white">
-                  UFSCar Horas
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-semibold tracking-[-0.02em] text-white">
+                    UFSCar Horas
+                  </span>
+                  <span className={`text-[10px] font-bold px-1.5 py-0.2 rounded ${
+                    activeRole === 'student' ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/30' : 'bg-blue-950/80 text-blue-300 border border-blue-500/40'
+                  }`}>
+                    {activeRole === 'student' ? 'Visão Aluno' : 'SGA Secretaria'}
+                  </span>
+                </div>
                 <span className="text-[11px] text-zinc-400">
                   Ciência da Computação
                 </span>

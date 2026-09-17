@@ -94,7 +94,7 @@ export default function SecretaryReviewModal() {
 
           <button
             onClick={() => setReviewingCertificate(null)}
-            className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors"
+            className="text-zinc-400 hover:text-white p-1 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
             aria-label="Fechar revisão"
           >
             <X className="w-5 h-5" />
@@ -172,7 +172,7 @@ export default function SecretaryReviewModal() {
                 </span>
                 <button
                   onClick={() => addToast(`Visualização em tamanho real de "${cert.fileName}" carregada.`, 'info')}
-                  className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 text-[11px] font-semibold"
+                  className="text-emerald-400 hover:text-emerald-300 flex items-center gap-1 text-[11px] font-semibold cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   Baixar Documento Original
@@ -202,7 +202,7 @@ export default function SecretaryReviewModal() {
                   <span className="truncate pr-2">SHA-256: {cert.hash}</span>
                   <button 
                     onClick={handleCopyHash}
-                    className="text-zinc-300 hover:text-white p-1 rounded hover:bg-zinc-800"
+                    className="text-zinc-300 hover:text-white p-1 rounded hover:bg-zinc-800 cursor-pointer"
                     title="Copiar Hash"
                   >
                     {copiedHash ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
